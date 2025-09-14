@@ -19,10 +19,11 @@ const LoginForm = ({ onLogin, isLoading = false, onForgotPassword }) => {
     }));
     
     // Clear error when user starts typing
-    if (errors?.[name]) {
+    if (errors?.[name] || errors?.general) {
       setErrors(prev => ({
         ...prev,
-        [name]: ''
+        [name]: '',
+        general: ''
       }));
     }
   };
