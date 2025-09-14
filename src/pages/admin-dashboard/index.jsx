@@ -9,6 +9,12 @@ import SystemMonitoringTab from './components/SystemMonitoringTab';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 
+/**
+ * The main page for the admin dashboard.
+ * It displays a sidebar with different tabs and renders the active tab in the main content area.
+ *
+ * @returns {JSX.Element} The rendered admin dashboard page.
+ */
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -77,7 +83,6 @@ const AdminDashboard = () => {
     }
   ];
 
-  // Simulate loading metrics
   useEffect(() => {
     const timer = setTimeout(() => {
       setMetricsLoading(false);
@@ -86,6 +91,10 @@ const AdminDashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  /**
+   * Renders the content of the active tab.
+   * @returns {JSX.Element | null} The rendered tab content.
+   */
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -242,7 +251,7 @@ const AdminDashboard = () => {
                     {tabs?.find(tab => tab?.id === activeTab)?.description}
                   </p>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <Button
                     variant="ghost"
@@ -250,7 +259,7 @@ const AdminDashboard = () => {
                     onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                     className="lg:hidden"
                   />
-                  
+
                   <div className="flex items-center space-x-2 text-sm text-text-secondary">
                     <Icon name="Clock" size={16} />
                     <span>Last updated: {new Date()?.toLocaleTimeString()}</span>

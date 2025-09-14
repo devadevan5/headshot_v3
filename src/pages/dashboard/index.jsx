@@ -8,6 +8,12 @@ import HeadshotGallery from './components/HeadshotGallery';
 import AccountSummaryCard from './components/AccountSummaryCard';
 import QuickStatsCard from './components/QuickStatsCard';
 
+/**
+ * The main dashboard for the application.
+ * It displays user information, credit balance, and a gallery of generated headshots.
+ *
+ * @returns {JSX.Element} The rendered dashboard page.
+ */
 const Dashboard = () => {
   const navigate = useNavigate();
   const [showPaywall, setShowPaywall] = useState(false);
@@ -28,7 +34,6 @@ const Dashboard = () => {
     averageRating: 4.6
   });
 
-  // Check for zero credits and show paywall
   useEffect(() => {
     if (userData?.credits === 0) {
       setPaywallTrigger('zero_credits');
@@ -39,6 +44,9 @@ const Dashboard = () => {
     }
   }, [userData?.credits]);
 
+  /**
+   * Handles the upgrade process by showing the paywall modal.
+   */
   const handleUpgrade = () => {
     if (userData?.credits === 0) {
       setPaywallTrigger('zero_credits');
@@ -50,35 +58,47 @@ const Dashboard = () => {
     setShowPaywall(true);
   };
 
+  /**
+   * Handles the upgrade of a subscription plan.
+   * @param {string} planId - The ID of the plan to upgrade to.
+   */
   const handlePaywallUpgrade = async (planId) => {
     try {
       // Simulate upgrade process
       console.log('Upgrading to plan:', planId);
-      
+
       // Mock credit addition based on plan
       const creditMap = {
         'starter': 100,
         'pro': 250,
         'business': 500
       };
-      
+
       setUserData(prev => ({
         ...prev,
         credits: prev?.credits + (creditMap?.[planId] || 100),
         subscriptionTier: planId?.charAt(0)?.toUpperCase() + planId?.slice(1)
       }));
-      
+
       setShowPaywall(false);
     } catch (error) {
       console.error('Upgrade failed:', error);
     }
   };
 
+  /**
+   * Handles the download of a headshot.
+   * @param {object} headshot - The headshot to download.
+   */
   const handleDownloadHeadshot = (headshot) => {
     console.log('Downloading headshot:', headshot?.id);
     // Implement download logic
   };
 
+  /**
+   * Handles the deletion of a headshot.
+   * @param {object} headshot - The headshot to delete.
+   */
   const handleDeleteHeadshot = (headshot) => {
     console.log('Deleting headshot:', headshot?.id);
     // Implement delete logic
@@ -86,7 +106,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header 
+      <Header
         isAuthenticated={true}
         userCredits={userData?.credits}
         userName={userData?.name}

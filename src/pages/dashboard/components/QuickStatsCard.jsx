@@ -1,7 +1,17 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 
-const QuickStatsCard = ({ 
+/**
+ * A card component that displays a set of quick statistics.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} [props.totalHeadshots=3] - The total number of headshots generated.
+ * @param {number} [props.thisMonthHeadshots=2] - The number of headshots generated this month.
+ * @param {number} [props.totalDownloads=6] - The total number of downloads.
+ * @param {number} [props.averageRating=4.3] - The average rating of the headshots.
+ * @returns {JSX.Element} The rendered quick stats card.
+ */
+const QuickStatsCard = ({
   totalHeadshots = 3,
   thisMonthHeadshots = 2,
   totalDownloads = 6,

@@ -8,6 +8,12 @@ import SocialAuthButtons from './components/SocialAuthButtons';
 import OTPLoginForm from './components/OTPLoginForm';
 import ForgotPasswordModal from './components/ForgotPasswordModal';
 
+/**
+ * A component that handles user authentication, including login, registration, and social authentication.
+ * It also includes a forgot password modal.
+ *
+ * @returns {JSX.Element} The rendered authentication page.
+ */
 const Authentication = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login');
@@ -15,16 +21,20 @@ const Authentication = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+  /**
+   * Handles the login process.
+   * @param {object} credentials - The user's login credentials.
+   */
   const handleLogin = async (credentials) => {
     setIsLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Mock successful login
       localStorage.setItem('authToken', 'mock-jwt-token');
       localStorage.setItem('userEmail', credentials?.email);
-      
+
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
@@ -33,17 +43,21 @@ const Authentication = () => {
     }
   };
 
+  /**
+   * Handles the registration process.
+   * @param {object} userData - The user's registration data.
+   */
   const handleRegister = async (userData) => {
     setIsLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Mock successful registration with 2 free credits
       localStorage.setItem('authToken', 'mock-jwt-token');
       localStorage.setItem('userEmail', userData?.email);
       localStorage.setItem('userCredits', '2');
-      
+
       navigate('/dashboard');
     } catch (error) {
       console.error('Registration failed:', error);
@@ -52,17 +66,21 @@ const Authentication = () => {
     }
   };
 
+  /**
+   * Handles social authentication.
+   * @param {string} provider - The social authentication provider.
+   */
   const handleSocialAuth = async (provider) => {
     setIsLoading(true);
     try {
       // Simulate social auth
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       const mockEmail = provider === 'google' ? 'user@gmail.com' : 'user@icloud.com';
       localStorage.setItem('authToken', 'mock-jwt-token');
       localStorage.setItem('userEmail', mockEmail);
       localStorage.setItem('userCredits', '2');
-      
+
       navigate('/dashboard');
     } catch (error) {
       console.error('Social auth failed:', error);
@@ -71,15 +89,19 @@ const Authentication = () => {
     }
   };
 
+  /**
+   * Handles OTP login.
+   * @param {object} otpData - The OTP data.
+   */
   const handleOTPLogin = async (otpData) => {
     setIsLoading(true);
     try {
       // Simulate OTP verification
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       localStorage.setItem('authToken', 'mock-jwt-token');
       localStorage.setItem('userEmail', otpData?.email);
-      
+
       navigate('/dashboard');
     } catch (error) {
       console.error('OTP login failed:', error);
@@ -88,6 +110,10 @@ const Authentication = () => {
     }
   };
 
+  /**
+   * Handles the forgot password process.
+   * @param {string} email - The user's email address.
+   */
   const handleForgotPassword = (email) => {
     console.log('Password reset requested for:', email);
     // In real app, this would trigger password reset email
@@ -119,7 +145,7 @@ const Authentication = () => {
                 Create Professional Headshots in Minutes
               </h2>
               <p className="text-lg text-text-secondary">
-                Transform your selfies into professional headshots using advanced AI technology. 
+                Transform your selfies into professional headshots using advanced AI technology.
                 Perfect for LinkedIn, resumes, and business profiles.
               </p>
             </div>

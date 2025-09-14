@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 
+/**
+ * A component that allows users to select a background for their headshot.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.selectedBackground - The currently selected background.
+ * @param {function} props.onBackgroundSelect - A function to be called when a background is selected.
+ * @param {boolean} [props.isProcessing=false] - Whether the component is in a processing state.
+ * @returns {JSX.Element} The rendered background selection component.
+ */
 const BackgroundSelection = ({ selectedBackground, onBackgroundSelect, isProcessing = false }) => {
   const [activeCategory, setActiveCategory] = useState('trending');
 
@@ -168,6 +177,10 @@ const BackgroundSelection = ({ selectedBackground, onBackgroundSelect, isProcess
 
   const currentBackgrounds = backgroundData?.[activeCategory] || [];
 
+  /**
+   * Handles the selection of a background.
+   * @param {object} background - The selected background.
+   */
   const handleBackgroundSelect = (background) => {
     if (!isProcessing) {
       onBackgroundSelect(background);
@@ -218,7 +231,7 @@ const BackgroundSelection = ({ selectedBackground, onBackgroundSelect, isProcess
                 alt={background?.name}
                 className="w-full h-full object-cover"
               />
-              
+
               {/* Popular Badge */}
               {background?.popular && (
                 <div className="absolute top-2 left-2 bg-accent text-accent-foreground px-2 py-1 rounded-full text-xs font-medium">

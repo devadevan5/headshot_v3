@@ -4,6 +4,12 @@ import Button from '../../../components/ui/Button';
 
 import Image from '../../../components/AppImage';
 
+/**
+ * A component that provides a UI for managing the global prompt template used for generating headshots.
+ * It includes features for editing, testing, and viewing the version history of the prompt.
+ *
+ * @returns {JSX.Element} The rendered prompt management section.
+ */
 const PromptManagementSection = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState(`Create a professional headshot with the following specifications:
@@ -16,7 +22,7 @@ const PromptManagementSection = () => {
 - 4K resolution output
 
 Please ensure the generated image maintains professional standards suitable for business profiles, LinkedIn, and corporate use.`);
-  
+
   const [testImage, setTestImage] = useState(null);
   const [testResults, setTestResults] = useState(null);
   const [isTestingPrompt, setIsTestingPrompt] = useState(false);
@@ -48,11 +54,17 @@ Please ensure the generated image maintains professional standards suitable for 
     }
   ];
 
+  /**
+   * Saves the current prompt.
+   */
   const handleSavePrompt = () => {
     console.log('Saving prompt:', currentPrompt);
     setIsEditing(false);
   };
 
+  /**
+   * Tests the current prompt with a test image.
+   */
   const handleTestPrompt = async () => {
     if (!testImage) {
       alert('Please upload a test image first');
@@ -60,7 +72,7 @@ Please ensure the generated image maintains professional standards suitable for 
     }
 
     setIsTestingPrompt(true);
-    
+
     // Simulate API call to test prompt
     setTimeout(() => {
       setTestResults({
@@ -74,6 +86,10 @@ Please ensure the generated image maintains professional standards suitable for 
     }, 3000);
   };
 
+  /**
+   * Handles the upload of a test image.
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The change event.
+   */
   const handleImageUpload = (event) => {
     const file = event?.target?.files?.[0];
     if (file) {
@@ -86,6 +102,9 @@ Please ensure the generated image maintains professional standards suitable for 
     }
   };
 
+  /**
+   * Approves the current prompt and deploys it to production.
+   */
   const handleApprovePrompt = () => {
     console.log('Approving prompt version');
     alert('Prompt approved and deployed to production!');
@@ -155,12 +174,12 @@ Please ensure the generated image maintains professional standards suitable for 
       {/* Test Prompt Section */}
       <div className="bg-card border border-border rounded-lg p-6">
         <h3 className="text-lg font-semibold text-foreground mb-4">Test Prompt</h3>
-        
+
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Upload Test Image */}
           <div className="space-y-4">
             <h4 className="font-medium text-foreground">Upload Test Image</h4>
-            
+
             <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
               {testImage ? (
                 <div className="space-y-4">
@@ -198,7 +217,7 @@ Please ensure the generated image maintains professional standards suitable for 
                   </Button>
                 </div>
               )}
-              
+
               <input
                 id="test-image-upload"
                 type="file"
@@ -224,7 +243,7 @@ Please ensure the generated image maintains professional standards suitable for 
           {/* Test Results */}
           <div className="space-y-4">
             <h4 className="font-medium text-foreground">Test Results</h4>
-            
+
             {testResults ? (
               <div className="space-y-4">
                 <div className="w-full h-64 rounded-lg overflow-hidden bg-muted">
@@ -234,7 +253,7 @@ Please ensure the generated image maintains professional standards suitable for 
                     className="w-full h-full object-cover"
                   />
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-text-secondary">Processing Time:</span>
@@ -282,7 +301,7 @@ Please ensure the generated image maintains professional standards suitable for 
       {/* Version History */}
       <div className="bg-card border border-border rounded-lg p-6">
         <h3 className="text-lg font-semibold text-foreground mb-4">Version History</h3>
-        
+
         <div className="space-y-3">
           {promptVersions?.map((version) => (
             <div
@@ -308,7 +327,7 @@ Please ensure the generated image maintains professional standards suitable for 
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <Button
                   variant="ghost"

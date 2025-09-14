@@ -2,18 +2,33 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const BillingSection = ({ 
-  paymentMethod, 
-  transactions, 
+/**
+ * A component that displays the user's payment method and transaction history.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.paymentMethod - The user's payment method.
+ * @param {Array<object>} props.transactions - An array of transaction objects.
+ * @param {function} props.onUpdatePayment - A function to be called when the user clicks the "Update" button.
+ * @param {function} props.onDownloadInvoice - A function to be called when the user clicks the "Download" button.
+ * @returns {JSX.Element} The rendered billing section.
+ */
+const BillingSection = ({
+  paymentMethod,
+  transactions,
   onUpdatePayment,
-  onDownloadInvoice 
+  onDownloadInvoice
 }) => {
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
-  const displayedTransactions = showAllTransactions 
-    ? transactions 
+  const displayedTransactions = showAllTransactions
+    ? transactions
     : transactions?.slice(0, 5);
 
+  /**
+   * Formats a date string into a human-readable format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (dateString) => {
     return new Date(dateString)?.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -22,6 +37,11 @@ const BillingSection = ({
     });
   };
 
+  /**
+   * Returns the color class for a given status.
+   * @param {string} status - The status to get the color for.
+   * @returns {string} The color class.
+   */
   const getStatusColor = (status) => {
     switch (status) {
       case 'succeeded':
@@ -35,6 +55,11 @@ const BillingSection = ({
     }
   };
 
+  /**
+   * Returns the icon name for a given status.
+   * @param {string} status - The status to get the icon for.
+   * @returns {string} The icon name.
+   */
   const getStatusIcon = (status) => {
     switch (status) {
       case 'succeeded':
@@ -70,9 +95,9 @@ const BillingSection = ({
         {paymentMethod ? (
           <div className="flex items-center space-x-4">
             <div className="w-12 h-8 bg-muted rounded flex items-center justify-center">
-              <Icon 
-                name={paymentMethod?.brand === 'visa' ? 'CreditCard' : 'CreditCard'} 
-                size={20} 
+              <Icon
+                name={paymentMethod?.brand === 'visa' ? 'CreditCard' : 'CreditCard'}
+                size={20}
                 className="text-text-secondary"
               />
             </div>
@@ -145,9 +170,9 @@ const BillingSection = ({
                     ${transaction?.amount?.toFixed(2)}
                   </div>
                   <div className="flex items-center space-x-1">
-                    <Icon 
-                      name={getStatusIcon(transaction?.status)} 
-                      size={14} 
+                    <Icon
+                      name={getStatusIcon(transaction?.status)}
+                      size={14}
                       className={getStatusColor(transaction?.status)}
                     />
                     <span className={`capitalize ${getStatusColor(transaction?.status)}`}>
@@ -185,9 +210,9 @@ const BillingSection = ({
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="flex items-center space-x-1">
-                        <Icon 
-                          name={getStatusIcon(transaction?.status)} 
-                          size={14} 
+                        <Icon
+                          name={getStatusIcon(transaction?.status)}
+                          size={14}
                           className={getStatusColor(transaction?.status)}
                         />
                         <span className={`capitalize ${getStatusColor(transaction?.status)}`}>

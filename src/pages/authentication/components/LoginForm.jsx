@@ -3,6 +3,15 @@ import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
+/**
+ * A component that provides a form for users to log in with their email and password.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onLogin - A function to be called when the user submits the form.
+ * @param {boolean} [props.isLoading=false] - Whether the form is in a loading state.
+ * @param {function} props.onForgotPassword - A function to be called when the user clicks the "Forgot password?" link.
+ * @returns {JSX.Element} The rendered login form.
+ */
 const LoginForm = ({ onLogin, isLoading = false, onForgotPassword }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -11,44 +20,57 @@ const LoginForm = ({ onLogin, isLoading = false, onForgotPassword }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
+  /**
+   * Handles changes to the form inputs.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e?.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
-    if (errors?.[name]) {
+    if (errors?.[name] || errors?.general) {
       setErrors(prev => ({
         ...prev,
-        [name]: ''
+        [name]: '',
+        general: ''
       }));
     }
   };
 
+  /**
+   * Validates the form data.
+   * @returns {boolean} Whether the form is valid.
+   */
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData?.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/?.test(formData?.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData?.password) {
       newErrors.password = 'Password is required';
     } else if (formData?.password?.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors)?.length === 0;
   };
 
+  /**
+   * Handles the submission of the form.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+   */
   const handleSubmit = (e) => {
     e?.preventDefault();
-    
+
     if (validateForm()) {
       // Mock validation for demo
       if (formData?.email === 'user@headshot.com' && formData?.password === 'password123') {
@@ -100,9 +122,9 @@ const LoginForm = ({ onLogin, isLoading = false, onForgotPassword }) => {
           className="absolute right-3 top-9 p-1 rounded-lg hover:bg-muted transition-colors duration-200"
           disabled={isLoading}
         >
-          <Icon 
-            name={showPassword ? 'EyeOff' : 'Eye'} 
-            size={16} 
+          <Icon
+            name={showPassword ? 'EyeOff' : 'Eye'}
+            size={16}
             className="text-text-secondary"
           />
         </button>
@@ -118,7 +140,7 @@ const LoginForm = ({ onLogin, isLoading = false, onForgotPassword }) => {
             Remember me
           </label>
         </div>
-        
+
         <button
           type="button"
           onClick={onForgotPassword}

@@ -5,6 +5,12 @@ import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Image from '../../../components/AppImage';
 
+/**
+ * A component that provides a UI for managing content, such as outfits and backgrounds.
+ * It includes features for searching, filtering, and performing bulk actions on the content.
+ *
+ * @returns {JSX.Element} The rendered content management tab.
+ */
 const ContentManagementTab = () => {
   const [activeSection, setActiveSection] = useState('outfits');
   const [selectedItems, setSelectedItems] = useState([]);
@@ -80,18 +86,29 @@ const ContentManagementTab = () => {
     { value: 'seasonal', label: 'Seasonal' }
   ];
 
+  /**
+   * Returns the data for the currently active section.
+   * @returns {Array<object>} The data for the active section.
+   */
   const getCurrentData = () => {
     return activeSection === 'outfits' ? outfitData : backgroundData;
   };
 
+  /**
+   * Toggles the selection of an item.
+   * @param {number} itemId - The ID of the item to select or deselect.
+   */
   const handleSelectItem = (itemId) => {
-    setSelectedItems(prev => 
-      prev?.includes(itemId) 
+    setSelectedItems(prev =>
+      prev?.includes(itemId)
         ? prev?.filter(id => id !== itemId)
         : [...prev, itemId]
     );
   };
 
+  /**
+   * Selects or deselects all items.
+   */
   const handleSelectAll = () => {
     const currentData = getCurrentData();
     if (selectedItems?.length === currentData?.length) {
@@ -101,11 +118,19 @@ const ContentManagementTab = () => {
     }
   };
 
+  /**
+   * Performs a bulk action on the selected items.
+   * @param {string} action - The action to perform.
+   */
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for items:`, selectedItems);
     setSelectedItems([]);
   };
 
+  /**
+   * Toggles the trending status of an item.
+   * @param {number} itemId - The ID of the item to toggle.
+   */
   const toggleTrending = (itemId) => {
     console.log(`Toggle trending for item ${itemId}`);
   };
@@ -229,7 +254,7 @@ const ContentManagementTab = () => {
                   onChange={() => handleSelectItem(item?.id)}
                   className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
                 />
-                
+
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
                   <Image
                     src={item?.image}

@@ -3,12 +3,23 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import { Checkbox } from '../../../components/ui/Checkbox';
 
-const CancellationModal = ({ 
-  isOpen, 
-  onClose, 
+/**
+ * A modal component that allows users to cancel their subscription.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} props.isOpen - Whether the modal is open.
+ * @param {function} props.onClose - A function to close the modal.
+ * @param {function} props.onConfirmCancellation - A function to be called when the user confirms the cancellation.
+ * @param {object} props.currentPlan - The user's current subscription plan.
+ * @param {string} props.nextBillingDate - The date of the user's next billing.
+ * @returns {JSX.Element | null} The rendered cancellation modal or null if it is not open.
+ */
+const CancellationModal = ({
+  isOpen,
+  onClose,
   onConfirmCancellation,
   currentPlan,
-  nextBillingDate 
+  nextBillingDate
 }) => {
   const [reason, setReason] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -24,9 +35,12 @@ const CancellationModal = ({
     { value: 'other', label: 'Other reason' }
   ];
 
+  /**
+   * Handles the confirmation of the subscription cancellation.
+   */
   const handleCancellation = async () => {
     if (!confirmUnderstanding) return;
-    
+
     setIsProcessing(true);
     try {
       await onConfirmCancellation({
@@ -41,6 +55,11 @@ const CancellationModal = ({
     }
   };
 
+  /**
+   * Formats a date string into a human-readable format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (dateString) => {
     return new Date(dateString)?.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -54,7 +73,7 @@ const CancellationModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />

@@ -2,9 +2,22 @@ import React, { useState } from 'react';
 import Icon from '../AppIcon';
 import Button from './Button';
 
+/**
+ * A component that displays the user's credit balance with different styles depending on the amount of credits.
+ * It also provides a button to add more credits when the balance is low.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} [props.credits=0] - The number of credits the user has.
+ * @param {function} props.onUpgrade - A function to be called when the user clicks the "Add Credits" button.
+ * @returns {JSX.Element} The rendered credit balance indicator.
+ */
 const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  /**
+   * Returns the credit status based on the number of credits.
+   * @returns {"empty" | "low" | "medium" | "high"} The credit status.
+   */
   const getCreditStatus = () => {
     if (credits === 0) return 'empty';
     if (credits <= 10) return 'low';
@@ -12,6 +25,10 @@ const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
     return 'high';
   };
 
+  /**
+   * Returns the color class for the credit status.
+   * @returns {string} The color class.
+   */
   const getStatusColor = () => {
     const status = getCreditStatus();
     switch (status) {
@@ -26,6 +43,10 @@ const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
     }
   };
 
+  /**
+   * Returns the icon name for the credit status.
+   * @returns {string} The icon name.
+   */
   const getStatusIcon = () => {
     const status = getCreditStatus();
     switch (status) {
@@ -38,6 +59,9 @@ const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
     }
   };
 
+  /**
+   * Handles the click event for the "Add Credits" button.
+   */
   const handleUpgrade = () => {
     if (onUpgrade) {
       onUpgrade();
@@ -58,7 +82,7 @@ const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
           </span>
           <span className="text-xs text-text-secondary">credits</span>
         </div>
-        
+
         {(getCreditStatus() === 'empty' || getCreditStatus() === 'low') && (
           <Button
             variant="outline"
@@ -97,7 +121,7 @@ const CreditBalanceIndicator = ({ credits = 0, onUpgrade }) => {
                   <Icon name="X" size={16} />
                 </button>
               </div>
-              
+
               <div className={`flex items-center space-x-3 mb-4 ${getStatusColor()}`}>
                 <Icon name={getStatusIcon()} size={20} />
                 <div>

@@ -1,6 +1,21 @@
 import React from "react";
 import { cn } from "../../utils/cn";
 
+/**
+ * A customizable input component that can be of type `text`, `checkbox`, or `radio`.
+ * It also supports labels, descriptions, and error messages.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.className] - Additional CSS classes for the input.
+ * @param {string} [props.type="text"] - The type of the input.
+ * @param {string} [props.label] - The label for the input.
+ * @param {string} [props.description] - The description for the input.
+ * @param {string} [props.error] - An error message to display.
+ * @param {boolean} [props.required=false] - Whether the input is required.
+ * @param {string} [props.id] - The ID of the input.
+ * @param {React.Ref} ref - The ref for the input component.
+ * @returns {JSX.Element} The rendered input component.
+ */
 const Input = React.forwardRef(({
     className,
     type = "text",

@@ -1,15 +1,31 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 
-const CreditUsageTracker = ({ 
-  currentCredits, 
-  totalCredits, 
-  monthlyUsage, 
-  resetDate 
+/**
+ * A component that displays the user's credit usage, including their current balance,
+ * total credits, and recent usage history.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} props.currentCredits - The user's current credit balance.
+ * @param {number} props.totalCredits - The user's total credits for the current billing period.
+ * @param {Array<object>} props.monthlyUsage - An array of objects representing the user's monthly usage.
+ * @param {string} props.resetDate - The date when the user's credits will reset.
+ * @returns {JSX.Element} The rendered credit usage tracker.
+ */
+const CreditUsageTracker = ({
+  currentCredits,
+  totalCredits,
+  monthlyUsage,
+  resetDate
 }) => {
   const usagePercentage = ((totalCredits - currentCredits) / totalCredits) * 100;
   const remainingPercentage = (currentCredits / totalCredits) * 100;
 
+  /**
+   * Formats a date string into a human-readable format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (dateString) => {
     return new Date(dateString)?.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -18,12 +34,20 @@ const CreditUsageTracker = ({
     });
   };
 
+  /**
+   * Returns the color class for the usage progress bar.
+   * @returns {string} The color class.
+   */
   const getUsageColor = () => {
     if (remainingPercentage <= 10) return 'bg-error';
     if (remainingPercentage <= 25) return 'bg-warning';
     return 'bg-success';
   };
 
+  /**
+   * Returns the color class for the usage text.
+   * @returns {string} The color class.
+   */
   const getUsageTextColor = () => {
     if (remainingPercentage <= 10) return 'text-error';
     if (remainingPercentage <= 25) return 'text-warning';
@@ -48,15 +72,15 @@ const CreditUsageTracker = ({
             {currentCredits} of {totalCredits} credits
           </span>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
-          <div 
+          <div
             className={`h-full transition-all duration-300 ${getUsageColor()}`}
             style={{ width: `${remainingPercentage}%` }}
           />
         </div>
-        
+
         <div className="flex justify-between text-xs text-text-secondary mt-1">
           <span>0</span>
           <span>{totalCredits}</span>
@@ -120,7 +144,7 @@ const CreditUsageTracker = ({
           <div className="flex items-center space-x-2">
             <Icon name="AlertTriangle" size={16} className="text-warning" />
             <span className="text-sm text-warning font-medium">
-              {remainingPercentage <= 10 
+              {remainingPercentage <= 10
                 ? 'Critical: Very low credit balance' :'Warning: Low credit balance'
               }
             </span>

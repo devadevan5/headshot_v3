@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-
+/**
+ * A component that allows users to manage their account security,
+ * including two-factor authentication and active sessions.
+ * It also provides a "danger zone" for deleting the account.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onSecurityUpdate - A function to be called when the security settings are updated.
+ * @returns {JSX.Element} The rendered security section.
+ */
 const SecuritySection = ({ onSecurityUpdate }) => {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -36,26 +44,34 @@ const SecuritySection = ({ onSecurityUpdate }) => {
     }
   ];
 
+  /**
+   * Formats a timestamp into a human-readable string.
+   * @param {string} timestamp - The timestamp to format.
+   * @returns {string} The formatted timestamp.
+   */
   const formatLastActive = (timestamp) => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) return 'Active now';
     if (diffInHours < 24) return `${diffInHours} hours ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays === 1) return 'Yesterday';
     return `${diffInDays} days ago`;
   };
 
+  /**
+   * Toggles two-factor authentication.
+   */
   const handleToggle2FA = async () => {
     setIsLoading(true);
     try {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       setTwoFactorEnabled(!twoFactorEnabled);
-      
+
       if (onSecurityUpdate) {
         onSecurityUpdate({ twoFactorEnabled: !twoFactorEnabled });
       }
@@ -66,6 +82,10 @@ const SecuritySection = ({ onSecurityUpdate }) => {
     }
   };
 
+  /**
+   * Terminates an active session.
+   * @param {number} sessionId - The ID of the session to terminate.
+   */
   const handleTerminateSession = async (sessionId) => {
     setIsLoading(true);
     try {
@@ -79,9 +99,12 @@ const SecuritySection = ({ onSecurityUpdate }) => {
     }
   };
 
+  /**
+   * Deletes the user's account.
+   */
   const handleDeleteAccount = async () => {
     if (deleteConfirmText !== 'DELETE') return;
-    
+
     setIsLoading(true);
     try {
       // Mock API call
@@ -176,10 +199,10 @@ const SecuritySection = ({ onSecurityUpdate }) => {
               >
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-background rounded-lg flex items-center justify-center">
-                    <Icon 
-                      name={session?.device?.includes('iPhone') ? 'Smartphone' : 
-                           session?.device?.includes('Android') ? 'Smartphone' : 'Monitor'} 
-                      size={20} 
+                    <Icon
+                      name={session?.device?.includes('iPhone') ? 'Smartphone' :
+                           session?.device?.includes('Android') ? 'Smartphone' : 'Monitor'}
+                      size={20}
                     />
                   </div>
                   <div>
@@ -197,7 +220,7 @@ const SecuritySection = ({ onSecurityUpdate }) => {
                     </p>
                   </div>
                 </div>
-                
+
                 {!session?.current && (
                   <Button
                     variant="outline"
@@ -242,7 +265,7 @@ const SecuritySection = ({ onSecurityUpdate }) => {
                 <div className="bg-background rounded-lg p-4 border border-error/30">
                   <h4 className="font-medium text-foreground mb-2">Confirm Account Deletion</h4>
                   <p className="text-sm text-text-secondary mb-4">
-                    This action cannot be undone. This will permanently delete your account, 
+                    This action cannot be undone. This will permanently delete your account,
                     all your generated headshots, and remove all associated data.
                   </p>
                   <p className="text-sm font-medium text-foreground mb-2">
@@ -256,7 +279,7 @@ const SecuritySection = ({ onSecurityUpdate }) => {
                     placeholder="Type DELETE to confirm"
                   />
                 </div>
-                
+
                 <div className="flex items-center space-x-3">
                   <Button
                     variant="outline"

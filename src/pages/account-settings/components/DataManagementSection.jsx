@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that allows users to download their personal data and clear their generation history.
+ * It includes modals for confirming these actions.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onDataAction - A function to be called when a data action is performed.
+ * @returns {JSX.Element} The rendered data management section.
+ */
 const DataManagementSection = ({ onDataAction }) => {
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
@@ -50,14 +58,21 @@ const DataManagementSection = ({ onDataAction }) => {
     dataCategories?.filter(cat => cat?.included)?.map(cat => cat?.id)
   );
 
+  /**
+   * Toggles the selection of a data category for download.
+   * @param {string} categoryId - The ID of the category to toggle.
+   */
   const handleCategoryToggle = (categoryId) => {
-    setSelectedCategories(prev => 
+    setSelectedCategories(prev =>
       prev?.includes(categoryId)
         ? prev?.filter(id => id !== categoryId)
         : [...prev, categoryId]
     );
   };
 
+  /**
+   * Handles the download of personal data.
+   */
   const handleDownloadData = async () => {
     setIsProcessing(true);
     setDownloadProgress(0);
@@ -70,7 +85,7 @@ const DataManagementSection = ({ onDataAction }) => {
       }
 
       // Mock data download
-      const selectedData = dataCategories?.filter(cat => 
+      const selectedData = dataCategories?.filter(cat =>
         selectedCategories?.includes(cat?.id)
       );
 
@@ -88,12 +103,15 @@ const DataManagementSection = ({ onDataAction }) => {
     }
   };
 
+  /**
+   * Handles the clearing of the generation history.
+   */
   const handleClearHistory = async () => {
     setIsProcessing(true);
     try {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       if (onDataAction) {
         onDataAction('clear', null);
       }
@@ -107,6 +125,10 @@ const DataManagementSection = ({ onDataAction }) => {
     }
   };
 
+  /**
+   * Calculates the total size of the selected data categories.
+   * @returns {number} The total size in KB.
+   */
   const getTotalSize = () => {
     return dataCategories?.filter(cat => selectedCategories?.includes(cat?.id))?.reduce((total, cat) => {
         const size = parseFloat(cat?.size);
@@ -115,6 +137,11 @@ const DataManagementSection = ({ onDataAction }) => {
       }, 0);
   };
 
+  /**
+   * Formats a size in KB into a human-readable string.
+   * @param {number} sizeInKB - The size in KB.
+   * @returns {string} The formatted size.
+   */
   const formatSize = (sizeInKB) => {
     if (sizeInKB < 1024) return `${sizeInKB?.toFixed(1)} KB`;
     return `${(sizeInKB / 1024)?.toFixed(1)} MB`;
@@ -154,7 +181,7 @@ const DataManagementSection = ({ onDataAction }) => {
               <div>
                 <p className="text-sm font-medium text-foreground">What's included?</p>
                 <p className="text-sm text-text-secondary mt-1">
-                  Your profile information, generated headshots, generation history, and app preferences. 
+                  Your profile information, generated headshots, generation history, and app preferences.
                   Data will be provided in JSON format with images in a ZIP archive.
                 </p>
               </div>
@@ -187,7 +214,7 @@ const DataManagementSection = ({ onDataAction }) => {
               <div>
                 <p className="text-sm font-medium text-warning">Important Note</p>
                 <p className="text-sm text-warning/80 mt-1">
-                  This will only clear your generation history records. Your actual headshot images 
+                  This will only clear your generation history records. Your actual headshot images
                   will remain available until their automatic deletion after 7 days.
                 </p>
               </div>
@@ -353,7 +380,7 @@ const DataManagementSection = ({ onDataAction }) => {
                     <div>
                       <p className="font-medium text-warning">Are you sure?</p>
                       <p className="text-sm text-text-secondary mt-1">
-                        This will permanently remove all records of your headshot generations. 
+                        This will permanently remove all records of your headshot generations.
                         This action cannot be undone.
                       </p>
                     </div>

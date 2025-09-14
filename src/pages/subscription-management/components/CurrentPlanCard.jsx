@@ -2,13 +2,29 @@ import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const CurrentPlanCard = ({ 
-  currentPlan, 
-  nextBillingDate, 
-  isActive, 
+/**
+ * A card component that displays the user's current subscription plan.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.currentPlan - The user's current subscription plan.
+ * @param {string} props.nextBillingDate - The date of the user's next billing.
+ * @param {boolean} props.isActive - Whether the user's subscription is active.
+ * @param {function} props.onManageBilling - A function to be called when the user clicks the "Manage Billing" button.
+ * @param {function} props.onCancelSubscription - A function to be called when the user clicks the "Cancel Subscription" button.
+ * @returns {JSX.Element} The rendered current plan card.
+ */
+const CurrentPlanCard = ({
+  currentPlan,
+  nextBillingDate,
+  isActive,
   onManageBilling,
-  onCancelSubscription 
+  onCancelSubscription
 }) => {
+  /**
+   * Formats a date string into a human-readable format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (dateString) => {
     return new Date(dateString)?.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -17,11 +33,19 @@ const CurrentPlanCard = ({
     });
   };
 
+  /**
+   * Returns the color class for the subscription status.
+   * @returns {string} The color class.
+   */
   const getStatusColor = () => {
     if (!isActive) return 'text-error';
     return 'text-success';
   };
 
+  /**
+   * Returns the icon name for the subscription status.
+   * @returns {string} The icon name.
+   */
   const getStatusIcon = () => {
     if (!isActive) return 'AlertCircle';
     return 'CheckCircle';
@@ -35,9 +59,9 @@ const CurrentPlanCard = ({
             Current Plan
           </h2>
           <div className="flex items-center space-x-2">
-            <Icon 
-              name={getStatusIcon()} 
-              size={16} 
+            <Icon
+              name={getStatusIcon()}
+              size={16}
               className={getStatusColor()}
             />
             <span className={`text-sm font-medium ${getStatusColor()}`}>

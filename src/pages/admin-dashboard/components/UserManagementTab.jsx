@@ -4,6 +4,12 @@ import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 
+/**
+ * A component that provides a UI for managing users.
+ * It includes features for searching, filtering, and performing bulk actions on users.
+ *
+ * @returns {JSX.Element} The rendered user management tab.
+ */
 const UserManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSubscription, setFilterSubscription] = useState('all');
@@ -74,6 +80,11 @@ const UserManagementTab = () => {
     { value: 'banned', label: 'Banned' }
   ];
 
+  /**
+   * Returns the color class for a given status.
+   * @param {string} status - The status to get the color for.
+   * @returns {string} The color class.
+   */
   const getStatusColor = (status) => {
     switch (status) {
       case 'active':
@@ -87,6 +98,11 @@ const UserManagementTab = () => {
     }
   };
 
+  /**
+   * Returns the color class for a given subscription plan.
+   * @param {string} subscription - The subscription plan to get the color for.
+   * @returns {string} The color class.
+   */
   const getSubscriptionColor = (subscription) => {
     switch (subscription?.toLowerCase()) {
       case 'premium':
@@ -100,14 +116,21 @@ const UserManagementTab = () => {
     }
   };
 
+  /**
+   * Toggles the selection of a user.
+   * @param {number} userId - The ID of the user to select or deselect.
+   */
   const handleSelectUser = (userId) => {
-    setSelectedUsers(prev => 
-      prev?.includes(userId) 
+    setSelectedUsers(prev =>
+      prev?.includes(userId)
         ? prev?.filter(id => id !== userId)
         : [...prev, userId]
     );
   };
 
+  /**
+   * Selects or deselects all users.
+   */
   const handleSelectAll = () => {
     if (selectedUsers?.length === filteredUsers?.length) {
       setSelectedUsers([]);
@@ -116,21 +139,39 @@ const UserManagementTab = () => {
     }
   };
 
+  /**
+   * Enters edit mode for a user's credits.
+   * @param {number} userId - The ID of the user to edit.
+   * @param {number} currentCredits - The user's current credits.
+   */
   const handleEditCredit = (userId, currentCredits) => {
     setEditingCredit(userId);
     setCreditValue(currentCredits?.toString());
   };
 
+  /**
+   * Saves the updated credit value for a user.
+   * @param {number} userId - The ID of the user to save.
+   */
   const handleSaveCredit = (userId) => {
     console.log(`Updating credits for user ${userId} to ${creditValue}`);
     setEditingCredit(null);
     setCreditValue('');
   };
 
+  /**
+   * Performs an action on a user.
+   * @param {number} userId - The ID of the user to perform the action on.
+   * @param {string} action - The action to perform.
+   */
   const handleUserAction = (userId, action) => {
     console.log(`${action} user ${userId}`);
   };
 
+  /**
+   * Performs a bulk action on the selected users.
+   * @param {string} action - The action to perform.
+   */
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for users:`, selectedUsers);
     setSelectedUsers([]);
@@ -139,10 +180,10 @@ const UserManagementTab = () => {
   const filteredUsers = userData?.filter(user => {
     const matchesSearch = user?.email?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
                          user?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-    const matchesSubscription = filterSubscription === 'all' || 
+    const matchesSubscription = filterSubscription === 'all' ||
                                user?.subscription?.toLowerCase() === filterSubscription;
     const matchesStatus = filterStatus === 'all' || user?.status === filterStatus;
-    
+
     return matchesSearch && matchesSubscription && matchesStatus;
   });
 
@@ -261,7 +302,7 @@ const UserManagementTab = () => {
                       <p className="text-sm text-text-secondary">{user?.email}</p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
                     <div>
                       <span className="text-text-secondary">Credits:</span>
@@ -302,7 +343,7 @@ const UserManagementTab = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <div>
                       <span className="text-text-secondary">Subscription:</span>
                       <div className="mt-1">
@@ -311,7 +352,7 @@ const UserManagementTab = () => {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div>
                       <span className="text-text-secondary">Status:</span>
                       <div className="mt-1">
@@ -320,7 +361,7 @@ const UserManagementTab = () => {
                         </span>
                       </div>
                     </div>
-                    
+
                     <div>
                       <span className="text-text-secondary">Generations:</span>
                       <div className="mt-1">
@@ -328,7 +369,7 @@ const UserManagementTab = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-4 mt-2 text-xs text-text-secondary">
                     <span>Joined {user?.joinDate}</span>
                     <span>•</span>

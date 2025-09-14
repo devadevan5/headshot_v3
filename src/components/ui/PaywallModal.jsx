@@ -2,12 +2,28 @@ import React, { useState, useEffect } from 'react';
 import Icon from '../AppIcon';
 import Button from './Button';
 
-const PaywallModal = ({ 
-  isOpen = false, 
-  onClose, 
+/**
+ * @typedef {'manual' | 'zero_credits' | 'low_credits'} PaywallTrigger
+ */
+
+/**
+ * A modal component that prompts the user to upgrade their plan.
+ * It can be triggered manually, when the user runs out of credits, or when their credit balance is low.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} [props.isOpen=false] - Whether the modal is open.
+ * @param {function} props.onClose - A function to close the modal.
+ * @param {function} props.onUpgrade - A function to handle the upgrade process.
+ * @param {number} [props.currentCredits=0] - The user's current credit balance.
+ * @param {PaywallTrigger} [props.trigger='manual'] - The trigger that opened the modal.
+ * @returns {JSX.Element | null} The rendered paywall modal or null if it is not open.
+ */
+const PaywallModal = ({
+  isOpen = false,
+  onClose,
   onUpgrade,
   currentCredits = 0,
-  trigger = 'manual' // 'manual', 'zero_credits', 'low_credits'
+  trigger = 'manual'
 }) => {
   const [selectedPlan, setSelectedPlan] = useState('pro');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -57,8 +73,11 @@ const PaywallModal = ({
     }
   ];
 
-  // Close modal on escape key
   useEffect(() => {
+    /**
+     * Handles the escape key press to close the modal.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     const handleEscape = (event) => {
       if (event?.key === 'Escape' && isOpen) {
         onClose();
@@ -75,6 +94,10 @@ const PaywallModal = ({
     }
   }, [isOpen, onClose]);
 
+  /**
+   * Returns the title for the modal based on the trigger.
+   * @returns {string} The modal title.
+   */
   const getModalTitle = () => {
     switch (trigger) {
       case 'zero_credits':
@@ -86,6 +109,10 @@ const PaywallModal = ({
     }
   };
 
+  /**
+   * Returns the description for the modal based on the trigger.
+   * @returns {string} The modal description.
+   */
   const getModalDescription = () => {
     switch (trigger) {
       case 'zero_credits':
@@ -97,9 +124,12 @@ const PaywallModal = ({
     }
   };
 
+  /**
+   * Handles the upgrade process.
+   */
   const handleUpgrade = async () => {
     setIsProcessing(true);
-    
+
     try {
       if (onUpgrade) {
         await onUpgrade(selectedPlan);
@@ -122,7 +152,7 @@ const PaywallModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
@@ -151,9 +181,9 @@ const PaywallModal = ({
         {(trigger === 'zero_credits' || trigger === 'low_credits') && (
           <div className="p-6 bg-muted/50 border-b border-border">
             <div className="flex items-center space-x-3">
-              <Icon 
-                name={trigger === 'zero_credits' ? 'AlertCircle' : 'AlertTriangle'} 
-                size={20} 
+              <Icon
+                name={trigger === 'zero_credits' ? 'AlertCircle' : 'AlertTriangle'}
+                size={20}
                 className={trigger === 'zero_credits' ? 'text-error' : 'text-warning'}
               />
               <div>

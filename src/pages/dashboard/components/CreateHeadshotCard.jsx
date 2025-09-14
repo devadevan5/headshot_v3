@@ -4,9 +4,20 @@ import Icon from '../../../components/AppIcon';
 
 import Button from '../../../components/ui/Button';
 
+/**
+ * A card component that prompts the user to create a new headshot.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} [props.credits=0] - The number of credits the user has.
+ * @param {boolean} [props.disabled=false] - Whether the create button is disabled.
+ * @returns {JSX.Element} The rendered create headshot card.
+ */
 const CreateHeadshotCard = ({ credits = 0, disabled = false }) => {
   const navigate = useNavigate();
 
+  /**
+   * Navigates the user to the headshot generation page.
+   */
   const handleCreateHeadshot = () => {
     if (credits > 0 && !disabled) {
       navigate('/headshot-generation');
@@ -34,7 +45,7 @@ const CreateHeadshotCard = ({ credits = 0, disabled = false }) => {
             Create Your Professional Headshot
           </h2>
           <p className="text-text-secondary mb-6 max-w-md">
-            Upload a selfie and let our AI generate stunning professional headshots in minutes. 
+            Upload a selfie and let our AI generate stunning professional headshots in minutes.
             Perfect for LinkedIn, resumes, and business profiles.
           </p>
 

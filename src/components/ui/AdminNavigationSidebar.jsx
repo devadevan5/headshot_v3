@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 
+/**
+ * A navigation sidebar for the admin dashboard.
+ * It has a collapsible state and contains navigation links to different sections of the admin dashboard.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} [props.isCollapsed=false] - Whether the sidebar is collapsed.
+ * @param {function} props.onToggleCollapse - A function to toggle the collapsed state of the sidebar.
+ * @returns {JSX.Element} The rendered admin navigation sidebar.
+ */
 const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -103,10 +112,19 @@ const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
     }
   ];
 
+  /**
+   * Checks if a given path is the active path.
+   * @param {string} path - The path to check.
+   * @returns {boolean} Whether the path is active.
+   */
   const isActivePath = (path) => {
     return location?.pathname === path || location?.pathname?.startsWith(path + '/');
   };
 
+  /**
+   * Toggles the expanded state of a navigation section.
+   * @param {string} sectionId - The ID of the section to toggle.
+   */
   const toggleSection = (sectionId) => {
     if (isCollapsed) return;
     setExpandedSections(prev => ({
@@ -115,10 +133,17 @@ const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
     }));
   };
 
+  /**
+   * Navigates to a given path.
+   * @param {string} path - The path to navigate to.
+   */
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  /**
+   * Navigates to the admin dashboard when the logo is clicked.
+   */
   const handleLogoClick = () => {
     navigate('/admin-dashboard');
   };
@@ -132,7 +157,7 @@ const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <div 
+          <div
             className={`flex items-center cursor-pointer transition-opacity duration-200 hover:opacity-80 ${isCollapsed ? 'justify-center' : ''}`}
             onClick={handleLogoClick}
           >
@@ -146,7 +171,7 @@ const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
               </div>
             )}
           </div>
-          
+
           {onToggleCollapse && (
             <button
               onClick={onToggleCollapse}
@@ -179,9 +204,9 @@ const AdminNavigationSidebar = ({ isCollapsed = false, onToggleCollapse }) => {
                     )}
                   </div>
                   {!isCollapsed && (
-                    <Icon 
-                      name="ChevronDown" 
-                      size={14} 
+                    <Icon
+                      name="ChevronDown"
+                      size={14}
                       className={`transition-transform duration-200 ${
                         expandedSections?.[section?.id] ? 'rotate-180' : ''
                       }`}

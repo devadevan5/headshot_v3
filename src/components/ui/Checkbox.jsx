@@ -2,6 +2,26 @@ import React from "react";
 import { Check, Minus } from "lucide-react";
 import { cn } from "../../utils/cn";
 
+/**
+ * @typedef {"sm" | "default" | "lg"} CheckboxSize
+ */
+
+/**
+ * A customizable checkbox component with support for labels, descriptions, and error messages.
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.className] - Additional CSS classes for the checkbox.
+ * @param {string} [props.id] - The ID of the checkbox.
+ * @param {boolean} props.checked - Whether the checkbox is checked.
+ * @param {boolean} [props.indeterminate=false] - Whether the checkbox is in an indeterminate state.
+ * @param {boolean} [props.disabled=false] - Whether the checkbox is disabled.
+ * @param {boolean} [props.required=false] - Whether the checkbox is required.
+ * @param {string} [props.label] - The label for the checkbox.
+ * @param {string} [props.description] - The description for the checkbox.
+ * @param {string} [props.error] - An error message to display.
+ * @param {CheckboxSize} [props.size="default"] - The size of the checkbox.
+ * @param {React.Ref} ref - The ref for the checkbox component.
+ * @returns {JSX.Element} The rendered checkbox component.
+ */
 const Checkbox = React.forwardRef(({
     className,
     id,
@@ -15,10 +35,8 @@ const Checkbox = React.forwardRef(({
     size = "default",
     ...props
 }, ref) => {
-    // Generate unique ID if not provided
     const checkboxId = id || `checkbox-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
-    // Size variants
     const sizeClasses = {
         sm: "h-4 w-4",
         default: "h-4 w-4",
@@ -92,7 +110,19 @@ const Checkbox = React.forwardRef(({
 
 Checkbox.displayName = "Checkbox";
 
-// Checkbox Group component
+/**
+ * A wrapper component for a group of checkboxes.
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.className] - Additional CSS classes for the checkbox group.
+ * @param {React.ReactNode} props.children - The checkboxes to be included in the group.
+ * @param {string} [props.label] - The label for the checkbox group.
+ * @param {string} [props.description] - The description for the checkbox group.
+ * @param {string} [props.error] - An error message to display for the checkbox group.
+ * @param {boolean} [props.required=false] - Whether the checkbox group is required.
+ * @param {boolean} [props.disabled=false] - Whether the checkbox group is disabled.
+ * @param {React.Ref} ref - The ref for the checkbox group component.
+ * @returns {JSX.Element} The rendered checkbox group component.
+ */
 const CheckboxGroup = React.forwardRef(({
     className,
     children,
