@@ -10,6 +10,12 @@ import CreditUsageTracker from './components/CreditUsageTracker';
 import CancellationModal from './components/CancellationModal';
 import PlanChangeModal from './components/PlanChangeModal';
 
+/**
+ * The main page for managing subscriptions.
+ * It displays the user's current plan, a comparison of available plans, billing information, and credit usage.
+ *
+ * @returns {JSX.Element} The rendered subscription management page.
+ */
 const SubscriptionManagement = () => {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -160,18 +166,26 @@ const SubscriptionManagement = () => {
     }
   ];
 
+  /**
+   * Handles the selection of a new subscription plan.
+   * @param {object} plan - The selected plan.
+   */
   const handlePlanSelection = (plan) => {
     setSelectedPlan(plan);
     setShowPlanChangeModal(true);
   };
 
+  /**
+   * Handles the change of a subscription plan.
+   * @param {object} newPlan - The new plan to change to.
+   */
   const handlePlanChange = async (newPlan) => {
     setIsProcessing(true);
     try {
       // Simulate API call to change subscription
       console.log('Changing plan to:', newPlan);
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // In real implementation, update user subscription state
       alert(`Successfully changed to ${newPlan?.name} plan!`);
     } catch (error) {
@@ -182,13 +196,17 @@ const SubscriptionManagement = () => {
     }
   };
 
+  /**
+   * Handles the cancellation of a subscription.
+   * @param {object} cancellationData - The cancellation data.
+   */
   const handleCancellation = async (cancellationData) => {
     setIsProcessing(true);
     try {
       // Simulate API call to cancel subscription
       console.log('Cancelling subscription:', cancellationData);
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       alert('Subscription cancelled successfully. You\'ll retain access until your billing period ends.');
     } catch (error) {
       console.error('Cancellation failed:', error);
@@ -198,24 +216,40 @@ const SubscriptionManagement = () => {
     }
   };
 
+  /**
+   * Handles the management of billing information.
+   */
   const handleManageBilling = () => {
     // In real implementation, this would open Stripe Customer Portal
     console.log('Opening Stripe Customer Portal...');
     alert('This would open the Stripe Customer Portal for billing management.');
   };
 
+  /**
+   * Handles the update of a payment method.
+   */
   const handleUpdatePayment = () => {
     // In real implementation, this would open Stripe payment method update
     console.log('Opening payment method update...');
     alert('This would open the payment method update form.');
   };
 
+  /**
+   * Handles the download of an invoice.
+   * @param {string} invoiceUrl - The URL of the invoice to download.
+   */
   const handleDownloadInvoice = (invoiceUrl) => {
     // In real implementation, this would download the invoice
     console.log('Downloading invoice:', invoiceUrl);
     alert('Invoice download started.');
   };
 
+  /**
+   * Calculates the proration for a plan change.
+   * @param {object} currentPlan - The user's current plan.
+   * @param {object} newPlan - The new plan to change to.
+   * @returns {number} The proration amount.
+   */
   const calculateProration = (currentPlan, newPlan) => {
     // Simple proration calculation (in real app, this would come from Stripe)
     const priceDiff = newPlan?.price - currentPlan?.price;
@@ -226,7 +260,7 @@ const SubscriptionManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header 
+      <Header
         isAuthenticated={true}
         userCredits={currentUser?.credits}
         userName={currentUser?.name}
@@ -236,7 +270,7 @@ const SubscriptionManagement = () => {
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-2 text-sm text-text-secondary mb-2">
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className="hover:text-foreground transition-colors duration-200"
             >

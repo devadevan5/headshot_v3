@@ -2,12 +2,26 @@ import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const CreditBalanceCard = ({ 
-  credits = 0, 
-  subscriptionTier = 'Free', 
+/**
+ * A card component that displays the user's credit balance and subscription tier.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} [props.credits=0] - The number of credits the user has.
+ * @param {string} [props.subscriptionTier='Free'] - The user's subscription tier.
+ * @param {function} props.onUpgrade - A function to be called when the user clicks the "Add Credits" button.
+ * @param {boolean} [props.showUpgradeButton=true] - Whether to show the "Add Credits" button.
+ * @returns {JSX.Element} The rendered credit balance card.
+ */
+const CreditBalanceCard = ({
+  credits = 0,
+  subscriptionTier = 'Free',
   onUpgrade,
-  showUpgradeButton = true 
+  showUpgradeButton = true
 }) => {
+  /**
+   * Returns the credit status based on the number of credits.
+   * @returns {'empty' | 'low' | 'medium' | 'high'} The credit status.
+   */
   const getCreditStatus = () => {
     if (credits === 0) return 'empty';
     if (credits <= 5) return 'low';
@@ -15,6 +29,10 @@ const CreditBalanceCard = ({
     return 'high';
   };
 
+  /**
+   * Returns the color class for the credit status.
+   * @returns {string} The color class.
+   */
   const getStatusColor = () => {
     const status = getCreditStatus();
     switch (status) {
@@ -29,6 +47,10 @@ const CreditBalanceCard = ({
     }
   };
 
+  /**
+   * Returns the icon name for the credit status.
+   * @returns {string} The icon name.
+   */
   const getStatusIcon = () => {
     const status = getCreditStatus();
     switch (status) {
@@ -41,6 +63,10 @@ const CreditBalanceCard = ({
     }
   };
 
+  /**
+   * Returns a message for the credit status.
+   * @returns {string} The status message.
+   */
   const getStatusMessage = () => {
     const status = getCreditStatus();
     switch (status) {
@@ -86,7 +112,7 @@ const CreditBalanceCard = ({
           </span>
           <span className="text-text-secondary">credits</span>
         </div>
-        
+
         <p className={`text-sm font-medium ${getStatusColor()}`}>
           {getStatusMessage()}
         </p>

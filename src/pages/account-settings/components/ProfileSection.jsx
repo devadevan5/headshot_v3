@@ -3,6 +3,15 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 
+/**
+ * A component that allows users to view and edit their profile information,
+ * including their email address and password. It also displays a list of connected accounts.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.userEmail="john.doe@example.com"] - The user's email address.
+ * @param {function} props.onUpdateProfile - A function to be called when the user's profile is updated.
+ * @returns {JSX.Element} The rendered profile section.
+ */
 const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,6 +38,10 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     }
   ];
 
+  /**
+   * Validates the form data.
+   * @returns {boolean} Whether the form is valid.
+   */
   const validateForm = () => {
     const newErrors = {};
 
@@ -54,9 +67,14 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     return Object.keys(newErrors)?.length === 0;
   };
 
+  /**
+   * Calculates the strength of a password.
+   * @param {string} password - The password to check.
+   * @returns {{strength: number, label: string, color: string}} The password strength.
+   */
   const getPasswordStrength = (password) => {
     if (!password) return { strength: 0, label: '', color: '' };
-    
+
     let strength = 0;
     if (password?.length >= 8) strength++;
     if (/[A-Z]/?.test(password)) strength++;
@@ -79,14 +97,17 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     };
   };
 
+  /**
+   * Handles changes to the form inputs.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e?.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when user starts typing
+
     if (errors?.[name]) {
       setErrors(prev => ({
         ...prev,
@@ -95,6 +116,9 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     }
   };
 
+  /**
+   * Handles the submission of the form.
+   */
   const handleSave = async () => {
     if (!validateForm()) return;
 
@@ -102,11 +126,11 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     try {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       if (onUpdateProfile) {
         onUpdateProfile(formData);
       }
-      
+
       setIsEditing(false);
       setFormData(prev => ({
         ...prev,
@@ -121,6 +145,9 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     }
   };
 
+  /**
+   * Cancels the editing of the form.
+   */
   const handleCancel = () => {
     setIsEditing(false);
     setFormData({
@@ -132,6 +159,10 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
     setErrors({});
   };
 
+  /**
+   * Handles the disconnection of a connected account.
+   * @param {string} provider - The provider of the account to disconnect.
+   */
   const handleDisconnectAccount = (provider) => {
     console.log(`Disconnecting ${provider} account`);
   };
@@ -178,7 +209,7 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
           <div className="space-y-4">
             <div className="border-t border-border pt-6">
               <h3 className="text-lg font-medium text-foreground mb-4">Change Password</h3>
-              
+
               <div className="space-y-4">
                 <Input
                   label="Current Password"
@@ -206,7 +237,7 @@ const ProfileSection = ({ userEmail = "john.doe@example.com", onUpdateProfile })
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-text-secondary">Password Strength:</span>
                       <span className={`text-sm font-medium ${
-                        passwordStrength?.strength >= 3 ? 'text-success' : 
+                        passwordStrength?.strength >= 3 ? 'text-success' :
                         passwordStrength?.strength >= 2 ? 'text-accent' : 'text-warning'
                       }`}>
                         {passwordStrength?.label}

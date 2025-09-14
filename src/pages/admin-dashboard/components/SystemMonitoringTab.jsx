@@ -3,6 +3,12 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
 
+/**
+ * A component that provides a UI for monitoring system activity,
+ * including transactions, webhooks, and user feedback.
+ *
+ * @returns {JSX.Element} The rendered system monitoring tab.
+ */
 const SystemMonitoringTab = () => {
   const [activeSection, setActiveSection] = useState('transactions');
   const [timeFilter, setTimeFilter] = useState('24h');
@@ -123,6 +129,11 @@ const SystemMonitoringTab = () => {
     { value: '30d', label: 'Last 30 Days' }
   ];
 
+  /**
+   * Returns the color class for a given status.
+   * @param {string} status - The status to get the color for.
+   * @returns {string} The color class.
+   */
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
@@ -137,6 +148,11 @@ const SystemMonitoringTab = () => {
     }
   };
 
+  /**
+   * Returns a list of star icons for a given rating.
+   * @param {number} rating - The rating to get the stars for.
+   * @returns {JSX.Element[]} A list of star icons.
+   */
   const getRatingStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <Icon
@@ -148,6 +164,10 @@ const SystemMonitoringTab = () => {
     ));
   };
 
+  /**
+   * Renders the list of transactions.
+   * @returns {JSX.Element} The rendered list of transactions.
+   */
   const renderTransactions = () => (
     <div className="space-y-4">
       {transactionData?.map((transaction) => (
@@ -169,7 +189,7 @@ const SystemMonitoringTab = () => {
               </span>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
             <div>
               <span className="text-text-secondary">Plan:</span>
@@ -203,6 +223,10 @@ const SystemMonitoringTab = () => {
     </div>
   );
 
+  /**
+   * Renders the list of webhooks.
+   * @returns {JSX.Element} The rendered list of webhooks.
+   */
   const renderWebhooks = () => (
     <div className="space-y-4">
       {webhookData?.map((webhook) => (
@@ -212,10 +236,10 @@ const SystemMonitoringTab = () => {
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 webhook?.status === 'success' ? 'bg-success/10' : 'bg-error/10'
               }`}>
-                <Icon 
-                  name={webhook?.status === 'success' ? 'CheckCircle' : 'AlertCircle'} 
-                  size={20} 
-                  className={webhook?.status === 'success' ? 'text-success' : 'text-error'} 
+                <Icon
+                  name={webhook?.status === 'success' ? 'CheckCircle' : 'AlertCircle'}
+                  size={20}
+                  className={webhook?.status === 'success' ? 'text-success' : 'text-error'}
                 />
               </div>
               <div>
@@ -227,7 +251,7 @@ const SystemMonitoringTab = () => {
               {webhook?.status}
             </span>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
             <div>
               <span className="text-text-secondary">Attempts:</span>
@@ -261,6 +285,10 @@ const SystemMonitoringTab = () => {
     </div>
   );
 
+  /**
+   * Renders the list of feedback.
+   * @returns {JSX.Element} The rendered list of feedback.
+   */
   const renderFeedback = () => (
     <div className="space-y-4">
       {feedbackData?.map((feedback) => (
@@ -284,11 +312,11 @@ const SystemMonitoringTab = () => {
               {feedback?.status}
             </span>
           </div>
-          
+
           <div className="mb-3">
             <p className="text-foreground">{feedback?.comment}</p>
           </div>
-          
+
           <div className="flex items-center justify-between text-sm">
             <span className="text-text-secondary">{feedback?.timestamp}</span>
             <div className="flex items-center space-x-2">

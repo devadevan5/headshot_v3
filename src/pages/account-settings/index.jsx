@@ -8,6 +8,12 @@ import CreditHistorySection from './components/CreditHistorySection';
 import DataManagementSection from './components/DataManagementSection';
 import Icon from '../../components/AppIcon';
 
+/**
+ * The main page for account settings.
+ * It displays a sidebar with different sections and renders the active section in the main content area.
+ *
+ * @returns {JSX.Element} The rendered account settings page.
+ */
 const AccountSettings = () => {
   const [activeSection, setActiveSection] = useState('profile');
   const [userCredits] = useState(150);
@@ -53,31 +59,55 @@ const AccountSettings = () => {
     }
   ];
 
+  /**
+   * Handles the update of the user's profile.
+   * @param {object} profileData - The updated profile data.
+   */
   const handleProfileUpdate = (profileData) => {
     console.log('Profile updated:', profileData);
     // Handle profile update logic
   };
 
+  /**
+   * Handles the update of the user's security settings.
+   * @param {object} securityData - The updated security data.
+   */
   const handleSecurityUpdate = (securityData) => {
     console.log('Security settings updated:', securityData);
     // Handle security update logic
   };
 
+  /**
+   * Handles the update of the user's notification settings.
+   * @param {object} notificationData - The updated notification data.
+   */
   const handleNotificationUpdate = (notificationData) => {
     console.log('Notification settings updated:', notificationData);
     // Handle notification update logic
   };
 
+  /**
+   * Handles the installation of the PWA.
+   */
   const handlePWAInstall = () => {
     console.log('PWA installation completed');
     // Handle PWA installation logic
   };
 
+  /**
+   * Handles data management actions.
+   * @param {string} action - The action to perform.
+   * @param {object} data - The data associated with the action.
+   */
   const handleDataAction = (action, data) => {
     console.log('Data action:', action, data);
     // Handle data management actions
   };
 
+  /**
+   * Renders the active settings section.
+   * @returns {JSX.Element | null} The rendered settings section.
+   */
   const renderActiveSection = () => {
     switch (activeSection) {
       case 'profile':
@@ -159,8 +189,8 @@ const AccountSettings = () => {
                     <div>
                       <p className="font-medium">{section?.title}</p>
                       <p className={`text-xs ${
-                        activeSection === section?.id 
-                          ? 'text-primary-foreground/80' 
+                        activeSection === section?.id
+                          ? 'text-primary-foreground/80'
                           : 'text-text-secondary'
                       }`}>
                         {section?.description}

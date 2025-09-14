@@ -3,12 +3,23 @@ import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
 
-const GenerationResult = ({ 
-  generatedImage, 
-  onDownload, 
-  onFeedback, 
+/**
+ * A component that displays the generated headshot and provides options for downloading, rating, and generating another headshot.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.generatedImage - The generated headshot image.
+ * @param {function} props.onDownload - A function to be called when the user clicks the download button.
+ * @param {function} props.onFeedback - A function to be called when the user submits feedback.
+ * @param {function} props.onGenerateAnother - A function to be called when the user clicks the "Generate Another" button.
+ * @param {boolean} [props.isDownloading=false] - Whether the image is currently being downloaded.
+ * @returns {JSX.Element} The rendered generation result component.
+ */
+const GenerationResult = ({
+  generatedImage,
+  onDownload,
+  onFeedback,
   onGenerateAnother,
-  isDownloading = false 
+  isDownloading = false
 }) => {
   const [feedback, setFeedback] = useState({
     rating: 0,
@@ -17,14 +28,25 @@ const GenerationResult = ({
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
+  /**
+   * Handles the selection of a rating.
+   * @param {number} rating - The selected rating.
+   */
   const handleRatingSelect = (rating) => {
     setFeedback(prev => ({ ...prev, rating }));
   };
 
+  /**
+   * Handles changes to the feedback comment.
+   * @param {React.ChangeEvent<HTMLTextAreaElement>} e - The change event.
+   */
   const handleCommentChange = (e) => {
     setFeedback(prev => ({ ...prev, comment: e?.target?.value }));
   };
 
+  /**
+   * Handles the submission of feedback.
+   */
   const handleSubmitFeedback = () => {
     if (feedback?.rating > 0) {
       onFeedback(feedback);
@@ -36,6 +58,9 @@ const GenerationResult = ({
     }
   };
 
+  /**
+   * Handles the download of the generated headshot.
+   */
   const handleDownload = () => {
     if (onDownload) {
       onDownload(generatedImage);
@@ -72,7 +97,7 @@ const GenerationResult = ({
             alt="Generated professional headshot"
             className="w-full aspect-[3/4] object-cover"
           />
-          
+
           {/* Quality Badge */}
           <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
             High Resolution
@@ -91,7 +116,7 @@ const GenerationResult = ({
         >
           {isDownloading ? 'Downloading...' : 'Download Headshot'}
         </Button>
-        
+
         <Button
           variant="outline"
           size="lg"
@@ -101,7 +126,7 @@ const GenerationResult = ({
         >
           Rate This Result
         </Button>
-        
+
         <Button
           variant="secondary"
           size="lg"
@@ -130,9 +155,9 @@ const GenerationResult = ({
           <div>
             <p className="text-text-secondary">Generated</p>
             <p className="font-medium text-foreground">
-              {new Date()?.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
+              {new Date()?.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
@@ -161,7 +186,7 @@ const GenerationResult = ({
       {showFeedbackForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowFeedbackForm(false)} />
-          
+
           <div className="relative w-full max-w-md bg-background rounded-lg shadow-lg p-6">
             {feedbackSubmitted ? (
               <div className="text-center">

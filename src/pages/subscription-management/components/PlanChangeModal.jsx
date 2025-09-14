@@ -2,20 +2,36 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const PlanChangeModal = ({ 
-  isOpen, 
-  onClose, 
+/**
+ * A modal component that allows users to confirm a change to their subscription plan.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} props.isOpen - Whether the modal is open.
+ * @param {function} props.onClose - A function to close the modal.
+ * @param {function} props.onConfirmChange - A function to be called when the user confirms the plan change.
+ * @param {object} props.currentPlan - The user's current subscription plan.
+ * @param {object} props.newPlan - The new subscription plan.
+ * @param {number} props.prorationAmount - The proration amount for the plan change.
+ * @param {string} props.nextBillingDate - The date of the user's next billing.
+ * @returns {JSX.Element | null} The rendered plan change modal or null if it is not open.
+ */
+const PlanChangeModal = ({
+  isOpen,
+  onClose,
   onConfirmChange,
   currentPlan,
   newPlan,
   prorationAmount,
-  nextBillingDate 
+  nextBillingDate
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const isUpgrade = newPlan?.price > currentPlan?.price;
   const isDowngrade = newPlan?.price < currentPlan?.price;
 
+  /**
+   * Handles the confirmation of the plan change.
+   */
   const handlePlanChange = async () => {
     setIsProcessing(true);
     try {
@@ -28,6 +44,11 @@ const PlanChangeModal = ({
     }
   };
 
+  /**
+   * Formats a date string into a human-readable format.
+   * @param {string} dateString - The date string to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (dateString) => {
     return new Date(dateString)?.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -41,7 +62,7 @@ const PlanChangeModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
@@ -147,9 +168,9 @@ const PlanChangeModal = ({
             </h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Icon 
-                  name={isUpgrade ? "ArrowUp" : "ArrowDown"} 
-                  size={16} 
+                <Icon
+                  name={isUpgrade ? "ArrowUp" : "ArrowDown"}
+                  size={16}
                   className={isUpgrade ? "text-success" : "text-warning"}
                 />
                 <span className="text-sm text-foreground">
@@ -157,9 +178,9 @@ const PlanChangeModal = ({
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <Icon 
-                  name={isUpgrade ? "ArrowUp" : "ArrowDown"} 
-                  size={16} 
+                <Icon
+                  name={isUpgrade ? "ArrowUp" : "ArrowDown"}
+                  size={16}
                   className={isUpgrade ? "text-success" : "text-warning"}
                 />
                 <span className="text-sm text-foreground">
@@ -218,8 +239,8 @@ const PlanChangeModal = ({
             iconName={isUpgrade ? "ArrowUp" : "ArrowDown"}
             iconPosition="left"
           >
-            {isProcessing 
-              ? 'Processing...' 
+            {isProcessing
+              ? 'Processing...'
               : `Confirm ${isUpgrade ? 'Upgrade' : isDowngrade ? 'Downgrade' : 'Change'}`
             }
           </Button>

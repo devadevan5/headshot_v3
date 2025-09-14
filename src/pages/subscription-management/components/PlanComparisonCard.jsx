@@ -2,18 +2,28 @@ import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const PlanComparisonCard = ({ 
-  plan, 
-  isCurrentPlan, 
-  onSelectPlan, 
-  isProcessing 
+/**
+ * A card component that displays a single subscription plan for comparison.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.plan - The subscription plan to display.
+ * @param {boolean} props.isCurrentPlan - Whether this is the user's current plan.
+ * @param {function} props.onSelectPlan - A function to be called when the user selects the plan.
+ * @param {boolean} props.isProcessing - Whether the component is in a processing state.
+ * @returns {JSX.Element} The rendered plan comparison card.
+ */
+const PlanComparisonCard = ({
+  plan,
+  isCurrentPlan,
+  onSelectPlan,
+  isProcessing
 }) => {
   const isUpgrade = plan?.price > 0; // Assuming current plan comparison logic
 
   return (
     <div className={`
       relative bg-card border-2 rounded-xl p-6 transition-all duration-200 hover:shadow-md
-      ${isCurrentPlan 
+      ${isCurrentPlan
         ? 'border-primary bg-primary/5' :'border-border hover:border-primary/50'
       }
       ${plan?.popular ? 'ring-2 ring-accent ring-opacity-20' : ''}
@@ -70,7 +80,7 @@ const PlanComparisonCard = ({
             {isUpgrade ? 'Upgrade' : 'Downgrade'} to {plan?.name}
           </Button>
         )}
-        
+
         {isCurrentPlan && (
           <div className="text-center py-2">
             <span className="text-sm text-text-secondary">

@@ -3,14 +3,26 @@ import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
+/**
+ * A modal component that allows users to request a password reset link.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} props.isOpen - Whether the modal is open.
+ * @param {function} props.onClose - A function to close the modal.
+ * @param {function} props.onResetRequest - A function to be called when a password reset is requested.
+ * @returns {JSX.Element | null} The rendered forgot password modal or null if it is not open.
+ */
 const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  // Close modal on escape key
   useEffect(() => {
+    /**
+     * Handles the escape key press to close the modal.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     const handleEscape = (event) => {
       if (event?.key === 'Escape' && isOpen) {
         handleClose();
@@ -27,6 +39,9 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
     }
   }, [isOpen]);
 
+  /**
+   * Closes the modal and resets its state.
+   */
   const handleClose = () => {
     setEmail('');
     setError('');
@@ -35,14 +50,18 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
     onClose();
   };
 
+  /**
+   * Handles the submission of the password reset request.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+   */
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    
+
     if (!email) {
       setError('Email is required');
       return;
     }
-    
+
     if (!/\S+@\S+\.\S+/?.test(email)) {
       setError('Please enter a valid email address');
       return;
@@ -54,11 +73,11 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       if (onResetRequest) {
         onResetRequest(email);
       }
-      
+
       setIsSuccess(true);
     } catch (err) {
       setError('Failed to send reset email. Please try again.');
@@ -67,6 +86,10 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
     }
   };
 
+  /**
+   * Handles changes to the email input.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleInputChange = (e) => {
     setEmail(e?.target?.value);
     if (error) {
@@ -79,11 +102,11 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
       />
-      
+
       {/* Modal */}
       <div className="relative w-full max-w-md mx-4 bg-background rounded-xl shadow-lg animate-slide-up">
         {/* Header */}
@@ -152,7 +175,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, onResetRequest }) => {
                 Reset Link Sent!
               </h3>
               <p className="text-text-secondary mb-6">
-                We've sent a password reset link to <strong>{email}</strong>. 
+                We've sent a password reset link to <strong>{email}</strong>.
                 Check your inbox and follow the instructions to reset your password.
               </p>
               <Button

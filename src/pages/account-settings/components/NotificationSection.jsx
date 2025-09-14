@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that allows users to manage their notification preferences.
+ * It groups settings by category and provides toggles for each notification type.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onNotificationUpdate - A function to be called when the notification settings are updated.
+ * @returns {JSX.Element} The rendered notification section.
+ */
 const NotificationSection = ({ onNotificationUpdate }) => {
   const [notifications, setNotifications] = useState({
     generationComplete: true,
@@ -58,6 +66,10 @@ const NotificationSection = ({ onNotificationUpdate }) => {
     }
   ];
 
+  /**
+   * Toggles the value of a notification setting.
+   * @param {string} key - The key of the notification setting to toggle.
+   */
   const handleToggle = (key) => {
     setNotifications(prev => ({
       ...prev,
@@ -65,16 +77,19 @@ const NotificationSection = ({ onNotificationUpdate }) => {
     }));
   };
 
+  /**
+   * Saves the notification settings.
+   */
   const handleSaveSettings = async () => {
     setIsLoading(true);
     try {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       if (onNotificationUpdate) {
         onNotificationUpdate(notifications);
       }
-      
+
       console.log('Notification settings saved:', notifications);
     } catch (error) {
       console.error('Failed to save notification settings:', error);
@@ -91,6 +106,11 @@ const NotificationSection = ({ onNotificationUpdate }) => {
     return acc;
   }, {});
 
+  /**
+   * Returns the icon name for a given notification category.
+   * @param {string} category - The category of the notification.
+   * @returns {string} The name of the icon.
+   */
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Essential':
@@ -104,6 +124,11 @@ const NotificationSection = ({ onNotificationUpdate }) => {
     }
   };
 
+  /**
+   * Returns the description for a given notification category.
+   * @param {string} category - The category of the notification.
+   * @returns {string} The description of the category.
+   */
   const getCategoryDescription = (category) => {
     switch (category) {
       case 'Essential':
@@ -166,7 +191,7 @@ const NotificationSection = ({ onNotificationUpdate }) => {
                       <p className="text-sm text-text-secondary">{setting?.description}</p>
                     </div>
                   </div>
-                  
+
                   <button
                     onClick={() => handleToggle(setting?.key)}
                     className={`

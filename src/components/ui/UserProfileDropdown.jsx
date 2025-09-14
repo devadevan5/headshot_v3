@@ -3,11 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
 
-const UserProfileDropdown = ({ 
-  userName = "John Doe", 
+/**
+ * A dropdown menu that displays user information and provides links to account settings, subscription management, and help.
+ * It also includes a logout button.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.userName="John Doe"] - The name of the user.
+ * @param {string} [props.userEmail="john@example.com"] - The email of the user.
+ * @param {string} [props.userAvatar=null] - The URL of the user's avatar.
+ * @param {function} props.onLogout - A function to be called when the user clicks the logout button.
+ * @returns {JSX.Element} The rendered user profile dropdown component.
+ */
+const UserProfileDropdown = ({
+  userName = "John Doe",
   userEmail = "john@example.com",
   userAvatar = null,
-  onLogout 
+  onLogout
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -34,8 +45,11 @@ const UserProfileDropdown = ({
     }
   ];
 
-  // Close dropdown when clicking outside
   useEffect(() => {
+    /**
+     * Handles clicks outside the dropdown to close it.
+     * @param {MouseEvent} event - The mouse event.
+     */
     const handleClickOutside = (event) => {
       if (dropdownRef?.current && !dropdownRef?.current?.contains(event?.target)) {
         setIsOpen(false);
@@ -48,8 +62,11 @@ const UserProfileDropdown = ({
     };
   }, []);
 
-  // Close dropdown on escape key
   useEffect(() => {
+    /**
+     * Handles the escape key press to close the dropdown.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     const handleEscape = (event) => {
       if (event?.key === 'Escape') {
         setIsOpen(false);
@@ -64,11 +81,18 @@ const UserProfileDropdown = ({
     }
   }, [isOpen]);
 
+  /**
+   * Navigates to a given path.
+   * @param {string} path - The path to navigate to.
+   */
   const handleNavigation = (path) => {
     navigate(path);
     setIsOpen(false);
   };
 
+  /**
+   * Handles the logout process.
+   */
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
@@ -80,6 +104,11 @@ const UserProfileDropdown = ({
     setIsOpen(false);
   };
 
+  /**
+   * Returns the initials of a name.
+   * @param {string} name - The name to get the initials from.
+   * @returns {string} The initials of the name.
+   */
   const getInitials = (name) => {
     return name?.split(' ')?.map(word => word?.charAt(0))?.join('')?.toUpperCase()?.slice(0, 2);
   };
@@ -109,9 +138,9 @@ const UserProfileDropdown = ({
             {userName}
           </p>
         </div>
-        <Icon 
-          name="ChevronDown" 
-          size={16} 
+        <Icon
+          name="ChevronDown"
+          size={16}
           className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>

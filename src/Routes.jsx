@@ -10,6 +10,11 @@ import HeadshotGeneration from './pages/headshot-generation';
 import Dashboard from './pages/dashboard';
 import SubscriptionManagement from './pages/subscription-management';
 
+/**
+ * A component that defines the routing for the application.
+ *
+ * @returns {JSX.Element} The rendered Routes component.
+ */
 const Routes = () => {
   return (
     <BrowserRouter>

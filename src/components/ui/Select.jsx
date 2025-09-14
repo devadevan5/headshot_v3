@@ -5,6 +5,38 @@ import { cn } from "../../utils/cn";
 import Button from "./Button";
 import Input from "./Input";
 
+/**
+ * @typedef {object} SelectOption
+ * @property {string | number} value - The value of the option.
+ * @property {string} label - The label of the option.
+ * @property {boolean} [disabled] - Whether the option is disabled.
+ * @property {string} [description] - A description for the option.
+ */
+
+/**
+ * A customizable select component that supports single and multiple selections, searching, clearing, and loading states.
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.className] - Additional CSS classes for the select component.
+ * @param {SelectOption[]} [props.options=[]] - The options for the select component.
+ * @param {string | number | string[] | number[]} props.value - The value of the select component.
+ * @param {string | number} [props.defaultValue] - The default value of the select component.
+ * @param {string} [props.placeholder="Select an option"] - The placeholder text for the select component.
+ * @param {boolean} [props.multiple=false] - Whether to allow multiple selections.
+ * @param {boolean} [props.disabled=false] - Whether the select component is disabled.
+ * @param {boolean} [props.required=false] - Whether the select component is required.
+ * @param {string} [props.label] - The label for the select component.
+ * @param {string} [props.description] - The description for the select component.
+ * @param {string} [props.error] - An error message to display.
+ * @param {boolean} [props.searchable=false] - Whether to allow searching through the options.
+ * @param {boolean} [props.clearable=false] - Whether to show a clear button.
+ * @param {boolean} [props.loading=false] - Whether the select component is in a loading state.
+ * @param {string} [props.id] - The ID of the select component.
+ * @param {string} [props.name] - The name of the select component.
+ * @param {function} props.onChange - A function to be called when the value changes.
+ * @param {function} [props.onOpenChange] - A function to be called when the dropdown is opened or closed.
+ * @param {React.Ref} ref - The ref for the select component.
+ * @returns {JSX.Element} The rendered select component.
+ */
 const Select = React.forwardRef(({
     className,
     options = [],
@@ -29,10 +61,8 @@ const Select = React.forwardRef(({
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Generate unique ID if not provided
     const selectId = id || `select-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
-    // Filter options based on search
     const filteredOptions = searchable && searchTerm
         ? options?.filter(option =>
             option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
@@ -40,7 +70,10 @@ const Select = React.forwardRef(({
         )
         : options;
 
-    // Get selected option(s) for display
+    /**
+     * Returns the display text for the selected option(s).
+     * @returns {string} The display text.
+     */
     const getSelectedDisplay = () => {
         if (!value) return placeholder;
 
@@ -55,6 +88,9 @@ const Select = React.forwardRef(({
         return selectedOption ? selectedOption?.label : placeholder;
     };
 
+    /**
+     * Toggles the dropdown open or closed.
+     */
     const handleToggle = () => {
         if (!disabled) {
             const newIsOpen = !isOpen;
@@ -66,6 +102,10 @@ const Select = React.forwardRef(({
         }
     };
 
+    /**
+     * Handles the selection of an option.
+     * @param {SelectOption} option - The selected option.
+     */
     const handleOptionSelect = (option) => {
         if (multiple) {
             const newValue = value || [];
@@ -80,15 +120,28 @@ const Select = React.forwardRef(({
         }
     };
 
+    /**
+     * Clears the selected value.
+     * @param {React.MouseEvent} e - The mouse event.
+     */
     const handleClear = (e) => {
         e?.stopPropagation();
         onChange?.(multiple ? [] : '');
     };
 
+    /**
+     * Handles the change event for the search input.
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+     */
     const handleSearchChange = (e) => {
         setSearchTerm(e?.target?.value);
     };
 
+    /**
+     * Checks if an option is selected.
+     * @param {string | number} optionValue - The value of the option to check.
+     * @returns {boolean} Whether the option is selected.
+     */
     const isSelected = (optionValue) => {
         if (multiple) {
             return value?.includes(optionValue) || false;
@@ -153,11 +206,10 @@ const Select = React.forwardRef(({
                     </div>
                 </button>
 
-                {/* Hidden native select for form submission */}
                 <select
                     name={name}
                     value={value || ''}
-                    onChange={() => { }} // Controlled by our custom logic
+                    onChange={() => { }}
                     className="sr-only"
                     tabIndex={-1}
                     multiple={multiple}
@@ -171,7 +223,6 @@ const Select = React.forwardRef(({
                     ))}
                 </select>
 
-                {/* Dropdown */}
                 {isOpen && (
                     <div className="absolute z-50 w-full mt-1 bg-white text-black border border-border rounded-md shadow-md">
                         {searchable && (

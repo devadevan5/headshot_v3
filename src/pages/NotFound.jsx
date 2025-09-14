@@ -3,9 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'components/ui/Button';
 import Icon from 'components/AppIcon';
 
+/**
+ * A component to be displayed when a user navigates to a page that does not exist.
+ * It provides options to go back to the previous page or to the home page.
+ *
+ * @returns {JSX.Element} The rendered 404 Not Found page.
+ */
 const NotFound = () => {
   const navigate = useNavigate();
 
+  /**
+   * Navigates the user to the home page.
+   */
   const handleGoHome = () => {
     navigate('/');
   };

@@ -11,6 +11,13 @@ import ReviewStep from './components/ReviewStep';
 import GenerationResult from './components/GenerationResult';
 import PaywallModal from '../../components/ui/PaywallModal';
 
+/**
+ * The main page for generating headshots.
+ * It guides the user through a multi-step process, including uploading a selfie,
+ * choosing an outfit and background, and reviewing the selections before generating the headshot.
+ *
+ * @returns {JSX.Element} The rendered headshot generation page.
+ */
 const HeadshotGeneration = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
@@ -39,7 +46,11 @@ const HeadshotGeneration = () => {
     { id: 4, label: 'Review & Generate', icon: 'Sparkles' }
   ];
 
-  // Check if user can proceed to next step
+  /**
+   * Checks if the user can proceed to a given step.
+   * @param {number} step - The step to check.
+   * @returns {boolean} Whether the user can proceed to the step.
+   */
   const canProceedToStep = (step) => {
     switch (step) {
       case 2:
@@ -53,7 +64,10 @@ const HeadshotGeneration = () => {
     }
   };
 
-  // Handle selfie upload
+  /**
+   * Handles the upload of a selfie.
+   * @param {string} imageData - The data URL of the uploaded image.
+   */
   const handleSelfieUpload = (imageData) => {
     setUploadedImage(imageData);
     // Auto-advance to next step after successful upload
@@ -64,7 +78,9 @@ const HeadshotGeneration = () => {
     }, 500);
   };
 
-  // Handle selfie removal
+  /**
+   * Handles the removal of the uploaded selfie.
+   */
   const handleSelfieRemove = () => {
     setUploadedImage(null);
     if (currentStep > 1) {
@@ -72,7 +88,10 @@ const HeadshotGeneration = () => {
     }
   };
 
-  // Handle outfit selection
+  /**
+   * Handles the selection of an outfit.
+   * @param {object} outfit - The selected outfit.
+   */
   const handleOutfitSelect = (outfit) => {
     setSelectedOutfit(outfit);
     // Auto-advance to next step after selection
@@ -83,7 +102,10 @@ const HeadshotGeneration = () => {
     }, 300);
   };
 
-  // Handle background selection
+  /**
+   * Handles the selection of a background.
+   * @param {object} background - The selected background.
+   */
   const handleBackgroundSelect = (background) => {
     setSelectedBackground(background);
     // Auto-advance to next step after selection
@@ -94,7 +116,9 @@ const HeadshotGeneration = () => {
     }, 300);
   };
 
-  // Handle generation
+  /**
+   * Handles the generation of the headshot.
+   */
   const handleGenerate = async () => {
     if (userCredits < 1) {
       setShowPaywall(true);
@@ -102,11 +126,11 @@ const HeadshotGeneration = () => {
     }
 
     setIsGenerating(true);
-    
+
     try {
       // Simulate API call to Google Gemini 2.5 Flash Image API
       await new Promise(resolve => setTimeout(resolve, 3000));
-      
+
       // Mock generated image
       const mockGeneratedImage = {
         id: `headshot-${Date.now()}`,
@@ -127,14 +151,17 @@ const HeadshotGeneration = () => {
     }
   };
 
-  // Handle download
+  /**
+   * Handles the download of the generated headshot.
+   * @param {object} image - The image to download.
+   */
   const handleDownload = async (image) => {
     setIsDownloading(true);
-    
+
     try {
       // Simulate download process
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Create download link
       const link = document.createElement('a');
       link.href = image?.url;
@@ -149,13 +176,18 @@ const HeadshotGeneration = () => {
     }
   };
 
-  // Handle feedback submission
+  /**
+   * Handles the submission of feedback.
+   * @param {object} feedbackData - The feedback data.
+   */
   const handleFeedback = (feedbackData) => {
     console.log('Feedback submitted:', feedbackData);
     // In real app, send to analytics/feedback API
   };
 
-  // Handle generate another
+  /**
+   * Resets the generation process to start over.
+   */
   const handleGenerateAnother = () => {
     setGenerationComplete(false);
     setGeneratedImage(null);
@@ -165,31 +197,36 @@ const HeadshotGeneration = () => {
     setSelectedBackground(null);
   };
 
-  // Handle step navigation
+  /**
+   * Handles navigation between steps.
+   * @param {number} step - The step to navigate to.
+   */
   const handleStepNavigation = (step) => {
     if (step < currentStep || canProceedToStep(step)) {
       setCurrentStep(step);
     }
   };
 
-  // Handle paywall upgrade
+  /**
+   * Handles the upgrade of a subscription plan from the paywall.
+   * @param {string} planId - The ID of the plan to upgrade to.
+   */
   const handlePaywallUpgrade = async (planId) => {
     console.log('Upgrading to plan:', planId);
     // Simulate upgrade process
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     // Mock credit addition based on plan
     const creditsByPlan = {
       starter: 100,
       pro: 250,
       business: 500
     };
-    
+
     setUserCredits(prev => prev + (creditsByPlan?.[planId] || 100));
     setShowPaywall(false);
   };
 
-  // Auto-save progress to localStorage
   useEffect(() => {
     const progressData = {
       currentStep,
@@ -200,7 +237,6 @@ const HeadshotGeneration = () => {
     localStorage.setItem('headshotProgress', JSON.stringify(progressData));
   }, [currentStep, uploadedImage, selectedOutfit, selectedBackground]);
 
-  // Load progress from localStorage on mount
   useEffect(() => {
     const savedProgress = localStorage.getItem('headshotProgress');
     if (savedProgress) {
@@ -216,6 +252,10 @@ const HeadshotGeneration = () => {
     }
   }, []);
 
+  /**
+   * Renders the content for the current step.
+   * @returns {JSX.Element | null} The rendered step content.
+   */
   const renderStepContent = () => {
     if (generationComplete && generatedImage) {
       return (
@@ -273,7 +313,7 @@ const HeadshotGeneration = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header 
+      <Header
         isAuthenticated={true}
         userCredits={userCredits}
         userName={userData?.name}

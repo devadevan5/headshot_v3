@@ -1,7 +1,15 @@
 import React from 'react';
 import Button from '../../../components/ui/Button';
 
-
+/**
+ * A component that provides buttons for users to authenticate with Google and Apple.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onGoogleAuth - A function to be called when the user clicks the Google button.
+ * @param {function} props.onAppleAuth - A function to be called when the user clicks the Apple button.
+ * @param {boolean} [props.isLoading=false] - Whether the buttons are in a loading state.
+ * @returns {JSX.Element} The rendered social authentication buttons.
+ */
 const SocialAuthButtons = ({ onGoogleAuth, onAppleAuth, isLoading = false }) => {
   return (
     <div className="space-y-3">

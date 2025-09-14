@@ -3,17 +3,32 @@ import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
 
-const ReviewStep = ({ 
-  uploadedImage, 
-  selectedOutfit, 
-  selectedBackground, 
+/**
+ * A component that allows users to review their selections before generating a headshot.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {object} props.uploadedImage - The uploaded selfie image.
+ * @param {object} props.selectedOutfit - The selected outfit.
+ * @param {object} props.selectedBackground - The selected background.
+ * @param {number} [props.userCredits=0] - The number of credits the user has.
+ * @param {function} props.onGenerate - A function to be called when the user clicks the "Generate" button.
+ * @param {boolean} [props.isGenerating=false] - Whether the headshot is currently being generated.
+ * @returns {JSX.Element} The rendered review step component.
+ */
+const ReviewStep = ({
+  uploadedImage,
+  selectedOutfit,
+  selectedBackground,
   userCredits = 0,
   onGenerate,
-  isGenerating = false 
+  isGenerating = false
 }) => {
   const [showCreditWarning, setShowCreditWarning] = useState(false);
   const creditCost = 1;
 
+  /**
+   * Handles the generation of the headshot.
+   */
   const handleGenerate = () => {
     if (userCredits < creditCost) {
       setShowCreditWarning(true);
@@ -194,7 +209,7 @@ const ReviewStep = ({
         >
           {isGenerating ? 'Generating Your Headshot...' : 'Generate Professional Headshot'}
         </Button>
-        
+
         {!canGenerate && (
           <p className="text-sm text-text-secondary mt-2">
             Please complete all steps before generating

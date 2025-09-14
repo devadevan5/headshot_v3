@@ -1,3 +1,6 @@
+/**
+ * @file This file contains tests for the Checkbox component.
+ */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

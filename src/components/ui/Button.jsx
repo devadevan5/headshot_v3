@@ -4,6 +4,15 @@ import { cva } from "class-variance-authority";
 import { cn } from "../../utils/cn";
 import Icon from '../AppIcon';
 
+/**
+ * @typedef {"default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "success" | "warning" | "danger"} ButtonVariant
+ * @typedef {"default" | "sm" | "lg" | "icon" | "xs" | "xl"} ButtonSize
+ */
+
+/**
+ * Defines the variants for the button component.
+ * @type {Function}
+ */
 const buttonVariants = cva(
     "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     {
@@ -35,6 +44,23 @@ const buttonVariants = cva(
     }
 );
 
+/**
+ * A customizable button component with different variants, sizes, and the ability to include an icon and a loading state.
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.className] - Additional CSS classes for the button.
+ * @param {ButtonVariant} [props.variant] - The variant of the button.
+ * @param {ButtonSize} [props.size] - The size of the button.
+ * @param {boolean} [props.asChild=false] - Whether to render the button as a child element.
+ * @param {React.ReactNode} props.children - The content of the button.
+ * @param {boolean} [props.loading=false] - Whether the button is in a loading state.
+ * @param {string} [props.iconName=null] - The name of the icon to display.
+ * @param {'left' | 'right'} [props.iconPosition='left'] - The position of the icon.
+ * @param {number} [props.iconSize=null] - The size of the icon.
+ * @param {boolean} [props.fullWidth=false] - Whether the button should take up the full width of its container.
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled.
+ * @param {React.Ref} ref - The ref for the button component.
+ * @returns {JSX.Element} The rendered button component.
+ */
 const Button = React.forwardRef(({
     className,
     variant,
@@ -51,7 +77,6 @@ const Button = React.forwardRef(({
 }, ref) => {
     const Comp = asChild ? Slot : "button";
 
-    // Icon size mapping based on button size
     const iconSizeMap = {
         xs: 12,
         sm: 14,
@@ -63,7 +88,10 @@ const Button = React.forwardRef(({
 
     const calculatedIconSize = iconSize || iconSizeMap?.[size] || 16;
 
-    // Loading spinner
+    /**
+     * A loading spinner component.
+     * @returns {JSX.Element} The rendered loading spinner.
+     */
     const LoadingSpinner = () => (
         <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -71,6 +99,10 @@ const Button = React.forwardRef(({
         </svg>
     );
 
+    /**
+     * Renders the icon for the button.
+     * @returns {JSX.Element | null} The rendered icon or null if no icon is specified.
+     */
     const renderIcon = () => {
         if (!iconName) return null;
         try {
@@ -89,6 +121,10 @@ const Button = React.forwardRef(({
         }
     };
 
+    /**
+     * Renders a fallback button.
+     * @returns {JSX.Element} The rendered fallback button.
+     */
     const renderFallbackButton = () => (
         <button
             className={cn(
@@ -106,7 +142,6 @@ const Button = React.forwardRef(({
         </button>
     );
 
-    // When asChild is true, merge icons into the child element
     if (asChild) {
         try {
             if (!children || React.Children?.count(children) !== 1) {

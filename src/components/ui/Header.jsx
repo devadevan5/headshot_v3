@@ -5,6 +5,18 @@ import Button from './Button';
 import CreditBalanceIndicator from './CreditBalanceIndicator';
 import UserProfileDropdown from './UserProfileDropdown';
 
+/**
+ * The main header of the application.
+ * It displays the logo, navigation links, user information, and a credit balance indicator.
+ * It has different states for authenticated and unauthenticated users.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {boolean} [props.isAuthenticated=true] - Whether the user is authenticated.
+ * @param {number} [props.userCredits=150] - The number of credits the user has.
+ * @param {string} [props.userName="John Doe"] - The name of the user.
+ * @param {string} [props.userEmail="john@example.com"] - The email of the user.
+ * @returns {JSX.Element} The rendered header component.
+ */
 const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Doe", userEmail = "john@example.com" }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,23 +49,41 @@ const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Do
     }
   ];
 
+  /**
+   * Checks if a given path is the active path.
+   * @param {string} path - The path to check.
+   * @returns {boolean} Whether the path is active.
+   */
   const isActivePath = (path) => {
     return location?.pathname === path;
   };
 
+  /**
+   * Navigates to a given path.
+   * @param {string} path - The path to navigate to.
+   */
   const handleNavigation = (path) => {
     navigate(path);
     setIsMobileMenuOpen(false);
   };
 
+  /**
+   * Navigates to the dashboard when the logo is clicked.
+   */
   const handleLogoClick = () => {
     navigate('/dashboard');
   };
 
+  /**
+   * Navigates to the subscription management page.
+   */
   const handleUpgrade = () => {
     navigate('/subscription-management');
   };
 
+  /**
+   * Handles the logout process.
+   */
   const handleLogout = () => {
     // Add logout logic here or navigate to authentication
     navigate('/authentication');
@@ -64,7 +94,7 @@ const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Do
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            <div 
+            <div
               className="flex items-center cursor-pointer"
               onClick={handleLogoClick}
             >
@@ -75,8 +105,8 @@ const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Do
                 <span className="text-xl font-semibold text-foreground">Headshot.com</span>
               </div>
             </div>
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               onClick={() => navigate('/authentication')}
             >
               Sign In
@@ -92,7 +122,7 @@ const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Do
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <div 
+          <div
             className="flex items-center cursor-pointer transition-opacity duration-200 hover:opacity-80"
             onClick={handleLogoClick}
           >
@@ -128,12 +158,12 @@ const Header = ({ isAuthenticated = true, userCredits = 150, userName = "John Do
           {/* Right Section */}
           <div className="flex items-center space-x-4">
             <CreditBalanceIndicator credits={userCredits} onUpgrade={handleUpgrade} />
-            <UserProfileDropdown 
+            <UserProfileDropdown
               userName={userName}
               userEmail={userEmail}
               onLogout={handleLogout}
             />
-            
+
             {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors duration-200"

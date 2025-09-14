@@ -3,6 +3,14 @@ import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
 
+/**
+ * A component that provides a form for users to log in with a one-time password (OTP).
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onOTPLogin - A function to be called when the user successfully logs in with an OTP.
+ * @param {boolean} [props.isLoading=false] - Whether the form is in a loading state.
+ * @returns {JSX.Element} The rendered OTP login form.
+ */
 const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
   const [step, setStep] = useState('email'); // 'email' or 'otp'
   const [formData, setFormData] = useState({
@@ -21,13 +29,17 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
+  /**
+   * Handles changes to the form inputs.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e?.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors?.[name]) {
       setErrors(prev => ({
@@ -37,22 +49,30 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     }
   };
 
+  /**
+   * Validates the email address.
+   * @returns {boolean} Whether the email address is valid.
+   */
   const validateEmail = () => {
     const newErrors = {};
-    
+
     if (!formData?.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/?.test(formData?.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors)?.length === 0;
   };
 
+  /**
+   * Validates the OTP.
+   * @returns {boolean} Whether the OTP is valid.
+   */
   const validateOTP = () => {
     const newErrors = {};
-    
+
     if (!formData?.otp) {
       newErrors.otp = 'OTP is required';
     } else if (formData?.otp?.length !== 6) {
@@ -60,14 +80,18 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     } else if (!/^\d+$/?.test(formData?.otp)) {
       newErrors.otp = 'OTP must contain only numbers';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors)?.length === 0;
   };
 
+  /**
+   * Handles the submission of the email form to send an OTP.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+   */
   const handleSendOTP = async (e) => {
     e?.preventDefault();
-    
+
     if (validateEmail()) {
       try {
         // Simulate API call
@@ -81,9 +105,13 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     }
   };
 
+  /**
+   * Handles the submission of the OTP form to verify the OTP.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+   */
   const handleVerifyOTP = (e) => {
     e?.preventDefault();
-    
+
     if (validateOTP()) {
       // Mock OTP validation - in real app, this would be validated server-side
       if (formData?.otp === '123456') {
@@ -94,6 +122,9 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     }
   };
 
+  /**
+   * Handles the resending of the OTP.
+   */
   const handleResendOTP = async () => {
     setIsResending(true);
     try {
@@ -108,6 +139,9 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
     }
   };
 
+  /**
+   * Navigates back to the email form.
+   */
   const handleBackToEmail = () => {
     setStep('email');
     setFormData(prev => ({ ...prev, otp: '' }));
@@ -194,7 +228,7 @@ const OTPLoginForm = ({ onOTPLogin, isLoading = false }) => {
           <Icon name="ArrowLeft" size={14} />
           <span>Change email</span>
         </button>
-        
+
         {countdown > 0 ? (
           <span className="text-text-secondary">
             Resend in {countdown}s

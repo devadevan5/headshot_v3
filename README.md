@@ -1,107 +1,107 @@
-# React
+# Headshot.com - AI-Powered Professional Headshots
 
-A modern React-based project utilizing the latest frontend technologies and tools for building responsive web applications.
+This project is a modern, responsive web application that allows users to generate professional headshots using AI. It is built with React, Vite, and Tailwind CSS, and it includes features for user authentication, subscription management, and an admin dashboard for managing the application.
 
 ## 🚀 Features
 
-- **React 18** - React version with improved rendering and concurrent features
-- **Vite** - Lightning-fast build tool and development server
-- **Redux Toolkit** - State management with simplified Redux setup
-- **TailwindCSS** - Utility-first CSS framework with extensive customization
-- **React Router v6** - Declarative routing for React applications
-- **Data Visualization** - Integrated D3.js and Recharts for powerful data visualization
-- **Form Management** - React Hook Form for efficient form handling
-- **Animation** - Framer Motion for smooth UI animations
-- **Testing** - Jest and React Testing Library setup
+-   **AI Headshot Generation:** Users can upload a selfie, choose an outfit and background, and generate a professional headshot.
+-   **User Authentication:** Secure user authentication with email/password, OTP, and social login (Google, Apple).
+-   **Subscription Management:** Users can manage their subscription plans, view billing history, and purchase credits.
+-   **Admin Dashboard:** A comprehensive dashboard for administrators to manage users, content, and system settings.
+-   **Responsive Design:** The application is fully responsive and works on all devices.
+-   **PWA Support:** The application can be installed as a Progressive Web App (PWA) for a native-like experience.
+
+## 🛠️ Tech Stack
+
+-   **React 18:** For building the user interface.
+-   **Vite:** As the build tool and development server.
+-   **Tailwind CSS:** For styling the application.
+-   **React Router v6:** for routing.
+-   **Lucide React:** For icons.
 
 ## 📋 Prerequisites
 
-- Node.js (v14.x or higher)
-- npm or yarn
+-   Node.js (v16.x or higher)
+-   npm or yarn
 
-## 🛠️ Installation
+## 🛠️ Installation and Setup
 
-1. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-   
-2. Start the development server:
-   ```bash
-   npm start
-   # or
-   yarn start
-   ```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/headshot-app.git
+    cd headshot-app
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the root of the project and add the necessary environment variables. You can use the `.env.example` file as a template.
+
+4.  **Start the development server:**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
+    The application will be available at `http://localhost:5173`.
 
 ## 📁 Project Structure
 
 ```
-react_app/
-├── public/             # Static assets
+.
+├── public/
 ├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Page components
-│   ├── styles/         # Global styles and Tailwind configuration
-│   ├── App.jsx         # Main application component
-│   ├── Routes.jsx      # Application routes
-│   └── index.jsx       # Application entry point
-├── .env                # Environment variables
-├── index.html          # HTML template
-├── package.json        # Project dependencies and scripts
-├── tailwind.config.js  # Tailwind CSS configuration
-└── vite.config.js      # Vite configuration
-```
-
-## 🧩 Adding Routes
-
-To add new routes to the application, update the `Routes.jsx` file:
-
-```jsx
-import { useRoutes } from "react-router-dom";
-import HomePage from "pages/HomePage";
-import AboutPage from "pages/AboutPage";
-
-const ProjectRoutes = () => {
-  let element = useRoutes([
-    { path: "/", element: <HomePage /> },
-    { path: "/about", element: <AboutPage /> },
-    // Add more routes as needed
-  ]);
-
-  return element;
-};
+│   ├── components/
+│   ├── pages/
+│   │   ├── account-settings/
+│   │   ├── admin-dashboard/
+│   │   ├── authentication/
+│   │   ├── dashboard/
+│   │   ├── headshot-generation/
+│   │   └── subscription-management/
+│   ├── styles/
+│   ├── utils/
+│   ├── App.jsx
+│   ├── index.jsx
+│   └── Routes.jsx
+├── .gitignore
+├── index.html
+├── package.json
+├── README.md
+└── vite.config.mjs
 ```
 
 ## 🎨 Styling
 
-This project uses Tailwind CSS for styling. The configuration includes:
+This project uses **Tailwind CSS** for styling. The configuration can be found in `tailwind.config.js`. Global styles are defined in `src/styles/index.css`.
 
-- Forms plugin for form styling
-- Typography plugin for text styling
-- Aspect ratio plugin for responsive elements
-- Container queries for component-specific responsive design
-- Fluid typography for responsive text
-- Animation utilities
+## ✅ Testing
 
-## 📱 Responsive Design
+This project uses Vitest for testing. To run the tests, use the following command:
 
-The app is built with responsive design using Tailwind CSS breakpoints.
-
+```bash
+npm run test
+# or
+yarn test
+```
 
 ## 📦 Deployment
 
-Build the application for production:
+To build the application for production, run the following command:
 
 ```bash
 npm run build
 ```
 
+This will create a `dist` directory with the production-ready files.
+
 ## 🙏 Acknowledgments
 
-- Built with [Rocket.new](https://rocket.new)
-- Powered by React and Vite
-- Styled with Tailwind CSS
-
-Built with ❤️ on Rocket.new
+-   Built with love and coffee.
+-   Powered by React and Vite.
+-   Styled with Tailwind CSS.

@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that provides information about installing the application as a Progressive Web App (PWA).
+ * It detects the user's device and shows the appropriate installation instructions.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onInstallPWA - A function to be called when the PWA is installed.
+ * @returns {JSX.Element} The rendered PWA section.
+ */
 const PWASection = ({ onInstallPWA }) => {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -9,14 +17,18 @@ const PWASection = ({ onInstallPWA }) => {
   const [deviceType, setDeviceType] = useState('desktop');
 
   useEffect(() => {
-    // Check if PWA is already installed
+    /**
+     * Checks if the PWA is already installed.
+     */
     const checkInstallation = () => {
       if (window.matchMedia('(display-mode: standalone)')?.matches) {
         setIsInstalled(true);
       }
     };
 
-    // Detect device type
+    /**
+     * Detects the type of device the user is on.
+     */
     const detectDevice = () => {
       const userAgent = navigator.userAgent?.toLowerCase();
       if (/iphone|ipad|ipod/?.test(userAgent)) {
@@ -28,7 +40,10 @@ const PWASection = ({ onInstallPWA }) => {
       }
     };
 
-    // Listen for install prompt
+    /**
+     * Handles the `beforeinstallprompt` event.
+     * @param {Event} e - The `beforeinstallprompt` event.
+     */
     const handleBeforeInstallPrompt = (e) => {
       e?.preventDefault();
       setInstallPrompt(e);
@@ -43,6 +58,9 @@ const PWASection = ({ onInstallPWA }) => {
     };
   }, []);
 
+  /**
+   * Handles the installation of the PWA.
+   */
   const handleInstall = async () => {
     if (!installPrompt) return;
 
@@ -50,7 +68,7 @@ const PWASection = ({ onInstallPWA }) => {
     try {
       const result = await installPrompt?.prompt();
       console.log('Install prompt result:', result);
-      
+
       if (result?.outcome === 'accepted') {
         setIsInstalled(true);
         if (onInstallPWA) {
@@ -65,6 +83,10 @@ const PWASection = ({ onInstallPWA }) => {
     }
   };
 
+  /**
+   * Returns the installation instructions for the user's device.
+   * @returns {{title: string, steps: string[], icon: string}} The installation instructions.
+   */
   const getDeviceInstructions = () => {
     switch (deviceType) {
       case 'ios':
@@ -146,7 +168,7 @@ const PWASection = ({ onInstallPWA }) => {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             <Button
               variant="outline"
@@ -183,7 +205,7 @@ const PWASection = ({ onInstallPWA }) => {
                 </p>
               </div>
             </div>
-            
+
             {installPrompt && (
               <Button
                 variant="default"
@@ -242,7 +264,7 @@ const PWASection = ({ onInstallPWA }) => {
               <div>
                 <p className="text-sm font-medium text-foreground">Browser Compatibility</p>
                 <p className="text-sm text-text-secondary mt-1">
-                  App installation is supported on Chrome, Edge, Safari, and other modern browsers. 
+                  App installation is supported on Chrome, Edge, Safari, and other modern browsers.
                   If you don't see the install option, try updating your browser.
                 </p>
               </div>

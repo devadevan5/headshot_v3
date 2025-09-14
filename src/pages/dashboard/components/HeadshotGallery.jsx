@@ -3,6 +3,15 @@ import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that displays a gallery of the user's generated headshots.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {Array<object>} [props.headshots=[]] - An array of headshot objects to display.
+ * @param {function} props.onDownload - A function to be called when the user clicks the download button.
+ * @param {function} props.onDelete - A function to be called when the user clicks the delete button.
+ * @returns {JSX.Element} The rendered headshot gallery.
+ */
 const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
   const [selectedHeadshot, setSelectedHeadshot] = useState(null);
 
@@ -42,6 +51,10 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
 
   const displayHeadshots = headshots?.length > 0 ? headshots : mockHeadshots;
 
+  /**
+   * Handles the download of a headshot.
+   * @param {object} headshot - The headshot to download.
+   */
   const handleDownload = (headshot) => {
     if (onDownload) {
       onDownload(headshot);
@@ -56,6 +69,10 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
     }
   };
 
+  /**
+   * Handles the deletion of a headshot.
+   * @param {object} headshot - The headshot to delete.
+   */
   const handleDelete = (headshot) => {
     if (onDelete) {
       onDelete(headshot);
@@ -64,6 +81,11 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
     }
   };
 
+  /**
+   * Formats a date into a human-readable string.
+   * @param {Date} date - The date to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
@@ -72,6 +94,10 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
     })?.format(date);
   };
 
+  /**
+   * A component to be displayed when there are no headshots to display.
+   * @returns {JSX.Element} The rendered empty state.
+   */
   const EmptyState = () => (
     <div className="text-center py-12">
       <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
@@ -126,7 +152,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
                 alt={`Headshot ${headshot?.id}`}
                 className="w-full h-full object-cover"
               />
-              
+
               {/* Overlay Actions */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-2">
                 <Button
@@ -160,7 +186,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
                   </div>
                 )}
               </div>
-              
+
               <div className="space-y-1">
                 <p className="text-xs text-text-secondary">
                   <span className="font-medium">Outfit:</span> {headshot?.outfit}
@@ -191,7 +217,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
       {/* View Modal */}
       {selectedHeadshot && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div 
+          <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setSelectedHeadshot(null)}
           />
@@ -207,7 +233,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
                 iconName="X"
               />
             </div>
-            
+
             <div className="p-4">
               <div className="aspect-square mb-4 rounded-lg overflow-hidden">
                 <Image
@@ -216,7 +242,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              
+
               <div className="space-y-2 mb-4">
                 <p className="text-sm">
                   <span className="font-medium text-foreground">Created:</span>{' '}
@@ -231,7 +257,7 @@ const HeadshotGallery = ({ headshots = [], onDownload, onDelete }) => {
                   <span className="text-text-secondary">{selectedHeadshot?.background}</span>
                 </p>
               </div>
-              
+
               <div className="flex space-x-3">
                 <Button
                   variant="default"

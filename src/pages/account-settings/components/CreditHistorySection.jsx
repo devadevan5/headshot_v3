@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that displays the user's credit transaction history,
+ * including usage, subscriptions, and adjustments.
+ * It also provides a summary of the user's credit balance.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} [props.currentCredits=150] - The user's current credit balance.
+ * @returns {JSX.Element} The rendered credit history section.
+ */
 const CreditHistorySection = ({ currentCredits = 150 }) => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,6 +107,11 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
     { value: 'bonus', label: 'Bonuses', icon: 'Gift' }
   ];
 
+  /**
+   * Returns the icon name for a given transaction type.
+   * @param {string} type - The type of the transaction.
+   * @returns {string} The name of the icon.
+   */
   const getTransactionIcon = (type) => {
     switch (type) {
       case 'usage':
@@ -113,24 +127,35 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
     }
   };
 
+  /**
+   * Returns the color class for a given transaction type and amount.
+   * @param {string} type - The type of the transaction.
+   * @param {number} amount - The amount of the transaction.
+   * @returns {string} The color class.
+   */
   const getTransactionColor = (type, amount) => {
     if (amount > 0) return 'text-success';
     if (type === 'usage') return 'text-text-secondary';
     return 'text-text-secondary';
   };
 
+  /**
+   * Formats a timestamp into a human-readable string.
+   * @param {string} timestamp - The timestamp to format.
+   * @returns {string} The formatted timestamp.
+   */
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) return 'Just now';
     if (diffInHours < 24) return `${diffInHours} hours ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays === 1) return 'Yesterday';
     if (diffInDays < 7) return `${diffInDays} days ago`;
-    
+
     return date?.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -138,8 +163,8 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
     });
   };
 
-  const filteredTransactions = selectedFilter === 'all' 
-    ? creditTransactions 
+  const filteredTransactions = selectedFilter === 'all'
+    ? creditTransactions
     : creditTransactions?.filter(t => t?.type === selectedFilter);
 
   const totalPages = Math.ceil(filteredTransactions?.length / itemsPerPage);
@@ -228,9 +253,9 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
             >
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-background rounded-lg flex items-center justify-center">
-                  <Icon 
-                    name={getTransactionIcon(transaction?.type)} 
-                    size={18} 
+                  <Icon
+                    name={getTransactionIcon(transaction?.type)}
+                    size={18}
                     className={getTransactionColor(transaction?.type, transaction?.amount)}
                   />
                 </div>
@@ -240,7 +265,7 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
                   <p className="text-xs text-text-secondary">{formatDate(transaction?.timestamp)}</p>
                 </div>
               </div>
-              
+
               <div className="text-right">
                 <p className={`font-semibold ${
                   transaction?.amount > 0 ? 'text-success' : 'text-text-secondary'
@@ -266,7 +291,7 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
           <p className="text-sm text-text-secondary">
             Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredTransactions?.length)} of {filteredTransactions?.length} transactions
           </p>
-          
+
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
@@ -278,7 +303,7 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
             >
               Previous
             </Button>
-            
+
             <div className="flex items-center space-x-1">
               {Array.from({ length: totalPages }, (_, i) => i + 1)?.map((page) => (
                 <button
@@ -296,7 +321,7 @@ const CreditHistorySection = ({ currentCredits = 150 }) => {
                 </button>
               ))}
             </div>
-            
+
             <Button
               variant="outline"
               size="sm"

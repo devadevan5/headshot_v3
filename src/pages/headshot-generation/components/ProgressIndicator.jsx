@@ -1,6 +1,15 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 
+/**
+ * A component that displays a progress indicator for a multi-step process.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {number} props.currentStep - The current step in the process.
+ * @param {number} [props.totalSteps=4] - The total number of steps in the process.
+ * @param {Array<object>} props.steps - An array of objects representing the steps in the process.
+ * @returns {JSX.Element} The rendered progress indicator.
+ */
 const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
   const defaultSteps = [
     { id: 1, label: 'Upload Selfie', icon: 'Upload' },
@@ -11,12 +20,22 @@ const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
 
   const stepData = steps || defaultSteps;
 
+  /**
+   * Returns the status of a given step.
+   * @param {number} stepNumber - The step number to get the status for.
+   * @returns {'completed' | 'active' | 'pending'} The status of the step.
+   */
   const getStepStatus = (stepNumber) => {
     if (stepNumber < currentStep) return 'completed';
     if (stepNumber === currentStep) return 'active';
     return 'pending';
   };
 
+  /**
+   * Returns the color class for a given step status.
+   * @param {'completed' | 'active' | 'pending'} status - The status of the step.
+   * @returns {string} The color class.
+   */
   const getStepColor = (status) => {
     switch (status) {
       case 'completed':
@@ -45,17 +64,17 @@ const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
                   {getStepStatus(step?.id) === 'completed' ? (
                     <Icon name="Check" size={20} color="white" />
                   ) : (
-                    <Icon 
-                      name={step?.icon} 
-                      size={20} 
-                      color={getStepStatus(step?.id) === 'active' ? 'white' : 'currentColor'} 
+                    <Icon
+                      name={step?.icon}
+                      size={20}
+                      color={getStepStatus(step?.id) === 'active' ? 'white' : 'currentColor'}
                     />
                   )}
                 </div>
                 <div className="text-center">
                   <p className={`
                     text-sm font-medium
-                    ${getStepStatus(step?.id) === 'active' ?'text-primary' 
+                    ${getStepStatus(step?.id) === 'active' ?'text-primary'
                       : getStepStatus(step?.id) === 'completed' ?'text-success' :'text-text-secondary'
                     }
                   `}>
@@ -63,7 +82,7 @@ const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
                   </p>
                 </div>
               </div>
-              
+
               {/* Connector Line */}
               {index < stepData?.length - 1 && (
                 <div className="flex-1 mx-4">
@@ -87,10 +106,10 @@ const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
             {Math.round((currentStep / totalSteps) * 100)}% Complete
           </span>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="w-full bg-muted rounded-full h-2 mb-4">
-          <div 
+          <div
             className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
             style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
@@ -102,9 +121,9 @@ const ProgressIndicator = ({ currentStep, totalSteps = 4, steps }) => {
             w-8 h-8 rounded-full flex items-center justify-center
             ${getStepColor(getStepStatus(currentStep))}
           `}>
-            <Icon 
-              name={stepData?.[currentStep - 1]?.icon || 'Circle'} 
-              size={16} 
+            <Icon
+              name={stepData?.[currentStep - 1]?.icon || 'Circle'}
+              size={16}
               color="white"
             />
           </div>

@@ -3,7 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const AccountSummaryCard = ({ 
+/**
+ * A card component that displays a summary of the user's account,
+ * including their subscription tier, billing information, and account statistics.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {string} [props.subscriptionTier='Free'] - The user's subscription tier.
+ * @param {Date} [props.nextBillingDate=null] - The date of the user's next billing.
+ * @param {boolean} [props.isActive=true] - Whether the user's account is active.
+ * @param {number} [props.totalHeadshots=0] - The total number of headshots the user has generated.
+ * @param {Date} [props.joinDate=new Date('2025-01-01')] - The date the user joined.
+ * @returns {JSX.Element} The rendered account summary card.
+ */
+const AccountSummaryCard = ({
   subscriptionTier = 'Free',
   nextBillingDate = null,
   isActive = true,
@@ -12,6 +24,11 @@ const AccountSummaryCard = ({
 }) => {
   const navigate = useNavigate();
 
+  /**
+   * Formats a date into a human-readable string.
+   * @param {Date} date - The date to format.
+   * @returns {string} The formatted date.
+   */
   const formatDate = (date) => {
     if (!date) return 'N/A';
     return new Intl.DateTimeFormat('en-US', {
@@ -21,12 +38,20 @@ const AccountSummaryCard = ({
     })?.format(date);
   };
 
+  /**
+   * Returns the subscription status of the user.
+   * @returns {'free' | 'inactive' | 'active'} The subscription status.
+   */
   const getSubscriptionStatus = () => {
     if (subscriptionTier === 'Free') return 'free';
     if (!isActive) return 'inactive';
     return 'active';
   };
 
+  /**
+   * Returns the color class for the subscription status.
+   * @returns {string} The color class.
+   */
   const getStatusColor = () => {
     const status = getSubscriptionStatus();
     switch (status) {
@@ -39,6 +64,10 @@ const AccountSummaryCard = ({
     }
   };
 
+  /**
+   * Returns the icon name for the subscription status.
+   * @returns {string} The icon name.
+   */
   const getStatusIcon = () => {
     const status = getSubscriptionStatus();
     switch (status) {
@@ -51,6 +80,10 @@ const AccountSummaryCard = ({
     }
   };
 
+  /**
+   * Returns the text for the subscription status.
+   * @returns {string} The status text.
+   */
   const getStatusText = () => {
     const status = getSubscriptionStatus();
     switch (status) {
@@ -130,7 +163,7 @@ const AccountSummaryCard = ({
               {formatDate(joinDate)}
             </span>
           </div>
-          
+
           {nextBillingDate && (
             <div className="flex items-center justify-between">
               <span className="text-sm text-text-secondary">Next Billing</span>
@@ -139,7 +172,7 @@ const AccountSummaryCard = ({
               </span>
             </div>
           )}
-          
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-text-secondary">Account Status</span>
             <span className={`text-sm font-medium ${getStatusColor()}`}>
@@ -162,7 +195,7 @@ const AccountSummaryCard = ({
                 Upgrade to Pro
               </Button>
             )}
-            
+
             <Button
               variant="outline"
               onClick={() => navigate('/account-settings')}

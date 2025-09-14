@@ -3,12 +3,27 @@ import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
 
+/**
+ * A component that allows users to upload a selfie for headshot generation.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {function} props.onUpload - A function to be called when a selfie is uploaded.
+ * @param {object} props.uploadedImage - The currently uploaded selfie.
+ * @param {function} props.onRemove - A function to be called when the uploaded selfie is removed.
+ * @param {boolean} [props.isProcessing=false] - Whether the component is in a processing state.
+ * @returns {JSX.Element} The rendered selfie upload component.
+ */
 const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [isDetectingFace, setIsDetectingFace] = useState(false);
   const fileInputRef = useRef(null);
 
+  /**
+   * Validates a file to ensure it meets the requirements.
+   * @param {File} file - The file to validate.
+   * @returns {string | null} An error message if the file is invalid, otherwise null.
+   */
   const validateFile = (file) => {
     const maxSize = 10 * 1024 * 1024; // 10MB
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -24,6 +39,11 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
     return null;
   };
 
+  /**
+   * Simulates face detection on a file.
+   * @param {File} file - The file to process.
+   * @returns {Promise<boolean>} A promise that resolves to true if a face is detected, otherwise false.
+   */
   const simulateFaceDetection = async (file) => {
     setIsDetectingFace(true);
     // Simulate face detection processing
@@ -32,9 +52,13 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
     return true; // Assume face detected successfully
   };
 
+  /**
+   * Handles the selection of a file.
+   * @param {File} file - The selected file.
+   */
   const handleFileSelect = async (file) => {
     setUploadError('');
-    
+
     const validationError = validateFile(file);
     if (validationError) {
       setUploadError(validationError);
@@ -43,7 +67,7 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
 
     try {
       const faceDetected = await simulateFaceDetection(file);
-      
+
       if (faceDetected) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -63,26 +87,42 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
     }
   };
 
+  /**
+   * Handles the drop event for drag-and-drop.
+   * @param {React.DragEvent<HTMLDivElement>} e - The drop event.
+   */
   const handleDrop = useCallback((e) => {
     e?.preventDefault();
     setIsDragOver(false);
-    
+
     const files = Array.from(e?.dataTransfer?.files);
     if (files?.length > 0) {
       handleFileSelect(files?.[0]);
     }
   }, []);
 
+  /**
+   * Handles the drag-over event for drag-and-drop.
+   * @param {React.DragEvent<HTMLDivElement>} e - The drag-over event.
+   */
   const handleDragOver = useCallback((e) => {
     e?.preventDefault();
     setIsDragOver(true);
   }, []);
 
+  /**
+   * Handles the drag-leave event for drag-and-drop.
+   * @param {React.DragEvent<HTMLDivElement>} e - The drag-leave event.
+   */
   const handleDragLeave = useCallback((e) => {
     e?.preventDefault();
     setIsDragOver(false);
   }, []);
 
+  /**
+   * Handles changes to the file input.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleFileInputChange = (e) => {
     const files = Array.from(e?.target?.files);
     if (files?.length > 0) {
@@ -90,10 +130,16 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
     }
   };
 
+  /**
+   * Handles the click event for the browse button.
+   */
   const handleBrowseClick = () => {
     fileInputRef?.current?.click();
   };
 
+  /**
+   * Handles the removal of the uploaded image.
+   */
   const handleRemoveImage = () => {
     setUploadError('');
     onRemove();
@@ -137,7 +183,7 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
               </div>
             </div>
           </div>
-          
+
           {/* Face detection indicator */}
           <div className="absolute top-3 right-3 bg-success text-success-foreground px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1">
             <Icon name="Check" size={12} />
@@ -165,7 +211,7 @@ const SelfieUpload = ({ onUpload, uploadedImage, onRemove, isProcessing = false 
       <div
         className={`
           relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200
-          ${isDragOver 
+          ${isDragOver
             ? 'border-primary bg-primary/5' :'border-border hover:border-primary/50'
           }
           ${isDetectingFace ? 'pointer-events-none' : 'cursor-pointer'}
